@@ -1,0 +1,3 @@
+const DEFAULT_TRANSPORT_BASE_URL = "http://localhost:50051"
+
+export { DEFAULT_TRANSPORT_BASE_URL }
