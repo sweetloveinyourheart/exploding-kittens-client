@@ -1,0 +1,1 @@
+export const AUTH_GUEST_CREDENTIAL_PROVIDER = "guest_login"

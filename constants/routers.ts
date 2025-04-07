@@ -1,5 +1,5 @@
 const HOME_ROUTER = "/"
-const GUEST_REGISTER_ROUTER = "/auth/guest"
+const GUEST_REGISTER_ROUTER = "/guest"
 
 export {
     HOME_ROUTER,

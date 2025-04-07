@@ -1,23 +1,30 @@
-"use client"
+"use server"
 
-import { Button } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
 import { GUEST_REGISTER_ROUTER } from "@/constants/routers";
+import Link from "next/link";
+import { auth } from "@/auth";
+import { Button } from "@/components/ui/button";
+import Welcome from "@/components/welcome";
 
-export default function Home() {
-  const router = useRouter()
+export default async function Home() {
+  const session = await auth();
+
+  if (session?.user) {
+    return (
+      <Welcome user={session.user}/>
+    )
+  }
 
   return (
-    <>
+    <main>
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-4xl font-bold mb-6">Welcome to Exploding Kittens</h1>
-        <Button
-          className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600"
-          onClick={() => router.push(GUEST_REGISTER_ROUTER)}
-        >
-          Guest Register
+        <Button type="button">
+          <Link href={GUEST_REGISTER_ROUTER}>
+            Guest Register
+          </Link>
         </Button>
       </div>
-    </>
+    </main>
   );
 }

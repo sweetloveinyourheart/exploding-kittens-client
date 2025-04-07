@@ -29,4 +29,4 @@ export class ClientServerGrpc {
     }
 }
 
-export const ClientServerGrpcInstance = new ClientServerGrpc()
+export const clientServerGrpcInstance = new ClientServerGrpc()
