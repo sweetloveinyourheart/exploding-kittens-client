@@ -9,6 +9,14 @@ import { Input } from "./ui/input";
 import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { User } from "next-auth";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { clientServerGrpcInstance } from "@/grpc/servers/clientserver";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { LOBBY_ROUTER } from "@/constants/routers";
 
 interface WelcomeProps {
     user: User
@@ -63,31 +71,11 @@ const Welcome: FunctionComponent<WelcomeProps> = ({ user }) => {
                                     </TabsContent>
 
                                     <TabsContent value="createLobby">
-                                        <div className="space-y-4">
-                                            <Input
-                                                type="text"
-                                                placeholder="Pick a lobby name"
-                                            />
-                                            <div className="flex justify-end">
-                                                <Button>
-                                                    Create Lobby
-                                                </Button>
-                                            </div>
-                                        </div>
+                                        <CreateLobby />
                                     </TabsContent>
 
                                     <TabsContent value="joinGame">
-                                        <div className="space-y-4">
-                                            <Input
-                                                type="text"
-                                                placeholder="Enter lobby code"
-                                            />
-                                            <div className="flex justify-end">
-                                                <Button>
-                                                    Join Game
-                                                </Button>
-                                            </div>
-                                        </div>
+                                        <JoinLobby />
                                     </TabsContent>
                                 </div>
                             </Tabs>
@@ -107,5 +95,129 @@ const Welcome: FunctionComponent<WelcomeProps> = ({ user }) => {
         </main>
     );
 }
+
+interface CreateLobbyProps { }
+
+const createLobbyFormSchema = z.object({
+    lobbyName: z.string()
+        .trim()
+        .min(3, { message: "Lobby name must be at least 3 characters." })
+        .max(255, { message: "Lobby name must be less than 255 characters." })
+        .regex(/^[a-zA-Z0-9 ]+$/, { message: "Lobby name must not contain special characters except spaces." }),
+})
+
+const CreateLobby: FunctionComponent<CreateLobbyProps> = () => {
+    const form = useForm<z.infer<typeof createLobbyFormSchema>>({
+        resolver: zodResolver(createLobbyFormSchema),
+        defaultValues: {
+            lobbyName: "",
+        },
+    })
+
+    const router = useRouter()
+
+    const onSubmit = async (values: z.infer<typeof createLobbyFormSchema>) => {
+        const response = await clientServerGrpcInstance.createNewLobby({
+            lobbyName: values.lobbyName,
+        })
+
+        if (response.data && response.data.lobbyId) {
+            toast.success("Lobby created")
+            router.push(`${LOBBY_ROUTER}/${response.data.lobbyId}`)
+        } else {
+            toast.error("Error creating guest profile", {
+                description: response.error?.message
+            })
+        }
+    }
+
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="lobbyName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Input placeholder="Pick a lobby name" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <div className="flex justify-end">
+                        <Button type="submit">
+                            Create Lobby
+                        </Button>
+                    </div>
+                </div>
+            </form>
+        </Form>
+    );
+}
+
+interface JoinLobbyProps { }
+
+const joinLobbyFormSchema = z.object({
+    lobbyCode: z.string()
+        .trim()
+        .min(3, { message: "Lobby name must be at least 3 characters." })
+        .max(255, { message: "Lobby name must be less than 255 characters." })
+        .regex(/^[a-zA-Z0-9 ]+$/, { message: "Lobby name must not contain special characters except spaces." }),
+})
+
+const JoinLobby: FunctionComponent<JoinLobbyProps> = () => {
+    const form = useForm<z.infer<typeof joinLobbyFormSchema>>({
+        resolver: zodResolver(joinLobbyFormSchema),
+        defaultValues: {
+            lobbyCode: "",
+        },
+    })
+
+    const router = useRouter()
+
+    const onSubmit = async (values: z.infer<typeof joinLobbyFormSchema>) => {
+        const response = await clientServerGrpcInstance.joinLobby({
+            lobbyCode: values.lobbyCode,
+        })
+
+        if (response.data && response.data.lobbyId) {
+            router.push(`${LOBBY_ROUTER}/${response.data.lobbyId}`)
+        } else {
+            toast.error("Error creating guest profile", {
+                description: response.error?.message
+            })
+        }
+    }
+
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+                <div className="space-y-4">
+                    <FormField
+                        control={form.control}
+                        name="lobbyCode"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Input placeholder="Enter lobby code" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <div className="flex justify-end">
+                        <Button type="submit">
+                            Create Lobby
+                        </Button>
+                    </div>
+                </div>
+            </form>
+        </Form>
+    );
+}
+
 
 export default Welcome;
