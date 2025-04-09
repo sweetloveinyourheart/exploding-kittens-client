@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { guestLogin } from "@/lib/auth/actions"
-import { generateRandomUsernameWithSuffix } from "@/utils/random"
+import { generateRandomUsernameWithSuffix } from "@/lib/utils"
 import { clientServerGrpcInstance } from "@/grpc/servers/clientserver"
 import Link from "next/link"
 import { HOME_ROUTER } from "@/constants/routers"

@@ -38,8 +38,9 @@ const Welcome: FunctionComponent<WelcomeProps> = ({ user }) => {
                     <Card className="min-h-[600px]">
                         <CardContent>
                             <Tabs defaultValue="account">
-                                <TabsList className="grid w-full grid-cols-2">
+                                <TabsList className="grid w-full grid-cols-3">
                                     <TabsTrigger value="account">Account</TabsTrigger>
+                                    <TabsTrigger value="createLobby">Create Lobby</TabsTrigger>
                                     <TabsTrigger value="joinGame">Join Game</TabsTrigger>
                                 </TabsList>
                                 <div className="mt-6">
@@ -61,15 +62,31 @@ const Welcome: FunctionComponent<WelcomeProps> = ({ user }) => {
                                         </div>
                                     </TabsContent>
 
+                                    <TabsContent value="createLobby">
+                                        <div className="space-y-4">
+                                            <Input
+                                                type="text"
+                                                placeholder="Pick a lobby name"
+                                            />
+                                            <div className="flex justify-end">
+                                                <Button>
+                                                    Create Lobby
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </TabsContent>
+
                                     <TabsContent value="joinGame">
                                         <div className="space-y-4">
                                             <Input
                                                 type="text"
-                                                placeholder="Enter Game Code"
+                                                placeholder="Enter lobby code"
                                             />
-                                            <Button>
-                                                Join Game
-                                            </Button>
+                                            <div className="flex justify-end">
+                                                <Button>
+                                                    Join Game
+                                                </Button>
+                                            </div>
                                         </div>
                                     </TabsContent>
                                 </div>
