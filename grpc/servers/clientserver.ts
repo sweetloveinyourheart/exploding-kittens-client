@@ -11,61 +11,64 @@ import {
     LeaveLobbyRequest,
     LeaveLobbyResponse
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
-import { Client, ConnectError, createClient } from "@connectrpc/connect";
-import { finalTransport } from "../transport";
+import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
+import { createGrpcConnectTransport } from "../transport";
 import { GrpcRequest, GrpcResponse } from "../interfaces/response";
+
+type ClientServerGrpcOpts = {
+    accessToken?: string
+}
 
 export class ClientServerGrpc {
     private readonly client: Client<typeof ClientServer>
 
-    constructor() {
-        this.client = createClient(ClientServer, finalTransport)
+    constructor(opts?: ClientServerGrpcOpts) {
+        const transport = createGrpcConnectTransport({ accessToken: opts?.accessToken })
+        this.client = createClient(ClientServer, transport)
     }
 
-    async createGuestUser(request: GrpcRequest<CreateNewGuestUserRequest>): Promise<GrpcResponse<CreateNewGuestUserResponse>> {
+    async createGuestUser(request: GrpcRequest<CreateNewGuestUserRequest>, options?: CallOptions): Promise<GrpcResponse<CreateNewGuestUserResponse>> {
         try {
-            const response = await this.client.createNewGuestUser(request)
+            const response = await this.client.createNewGuestUser(request, options)
             return { data: response, error: null }
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
         }
     }
 
-    async guestLogin(request: GrpcRequest<GuestLoginRequest>): Promise<GrpcResponse<GuestLoginResponse>> {
+    async guestLogin(request: GrpcRequest<GuestLoginRequest>, options?: CallOptions): Promise<GrpcResponse<GuestLoginResponse>> {
         try {
-            const response = await this.client.guestLogin(request)
+            const response = await this.client.guestLogin(request, options)
             return { data: response, error: null }
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
         }
     }
 
-    async createNewLobby(request: GrpcRequest<CreateLobbyRequest>): Promise<GrpcResponse<CreateLobbyResponse>> {
+    async createNewLobby(request: GrpcRequest<CreateLobbyRequest>, options?: CallOptions): Promise<GrpcResponse<CreateLobbyResponse>> {
         try {
-            const response = await this.client.createLobby(request)
+            const response = await this.client.createLobby(request, options)
             return { data: response, error: null }
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
         }
     }
 
-    async joinLobby(request: GrpcRequest<JoinLobbyRequest>): Promise<GrpcResponse<JoinLobbyResponse>> {
+    async joinLobby(request: GrpcRequest<JoinLobbyRequest>, options?: CallOptions): Promise<GrpcResponse<JoinLobbyResponse>> {
         try {
-            const response = await this.client.joinLobby(request)
+            const response = await this.client.joinLobby(request, options)
             return { data: response, error: null }
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
         }
     }
 
-    async leaveLobby(request: GrpcRequest<LeaveLobbyRequest>): Promise<GrpcResponse<LeaveLobbyResponse>> {
+    async leaveLobby(request: GrpcRequest<LeaveLobbyRequest>, options?: CallOptions): Promise<GrpcResponse<LeaveLobbyResponse>> {
         try {
-            const response = await this.client.leaveLobby(request)
+            const response = await this.client.leaveLobby(request, options)
             return { data: response, error: null }
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
         }
     }
 }
-
-export const clientServerGrpcInstance = new ClientServerGrpc()

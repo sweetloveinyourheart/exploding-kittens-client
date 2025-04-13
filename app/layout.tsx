@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import { GrpcProvider } from "@/contexts/grpcClient";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,8 +37,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider>
-            {children}
-            <Toaster />
+            <GrpcProvider>
+              {children}
+              <Toaster />
+            </GrpcProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>

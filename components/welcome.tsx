@@ -12,11 +12,11 @@ import { User } from "next-auth";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { clientServerGrpcInstance } from "@/grpc/servers/clientserver";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LOBBY_ROUTER } from "@/constants/routers";
+import { useGrpcClient } from "@/lib/hooks/grpc-client";
 
 interface WelcomeProps {
     user: User
@@ -96,8 +96,6 @@ const Welcome: FunctionComponent<WelcomeProps> = ({ user }) => {
     );
 }
 
-interface CreateLobbyProps { }
-
 const createLobbyFormSchema = z.object({
     lobbyName: z.string()
         .trim()
@@ -106,7 +104,7 @@ const createLobbyFormSchema = z.object({
         .regex(/^[a-zA-Z0-9 ]+$/, { message: "Lobby name must not contain special characters except spaces." }),
 })
 
-const CreateLobby: FunctionComponent<CreateLobbyProps> = () => {
+const CreateLobby: FunctionComponent = () => {
     const form = useForm<z.infer<typeof createLobbyFormSchema>>({
         resolver: zodResolver(createLobbyFormSchema),
         defaultValues: {
@@ -115,9 +113,10 @@ const CreateLobby: FunctionComponent<CreateLobbyProps> = () => {
     })
 
     const router = useRouter()
+    const { client } = useGrpcClient()
 
     const onSubmit = async (values: z.infer<typeof createLobbyFormSchema>) => {
-        const response = await clientServerGrpcInstance.createNewLobby({
+        const response = await client.createNewLobby({
             lobbyName: values.lobbyName,
         })
 
@@ -125,7 +124,7 @@ const CreateLobby: FunctionComponent<CreateLobbyProps> = () => {
             toast.success("Lobby created")
             router.push(`${LOBBY_ROUTER}/${response.data.lobbyId}`)
         } else {
-            toast.error("Error creating guest profile", {
+            toast.error("Error creating lobby", {
                 description: response.error?.message
             })
         }
@@ -158,8 +157,6 @@ const CreateLobby: FunctionComponent<CreateLobbyProps> = () => {
     );
 }
 
-interface JoinLobbyProps { }
-
 const joinLobbyFormSchema = z.object({
     lobbyCode: z.string()
         .trim()
@@ -168,7 +165,7 @@ const joinLobbyFormSchema = z.object({
         .regex(/^[a-zA-Z0-9 ]+$/, { message: "Lobby name must not contain special characters except spaces." }),
 })
 
-const JoinLobby: FunctionComponent<JoinLobbyProps> = () => {
+const JoinLobby: FunctionComponent = () => {
     const form = useForm<z.infer<typeof joinLobbyFormSchema>>({
         resolver: zodResolver(joinLobbyFormSchema),
         defaultValues: {
@@ -177,16 +174,17 @@ const JoinLobby: FunctionComponent<JoinLobbyProps> = () => {
     })
 
     const router = useRouter()
+    const { client } = useGrpcClient()
 
     const onSubmit = async (values: z.infer<typeof joinLobbyFormSchema>) => {
-        const response = await clientServerGrpcInstance.joinLobby({
+        const response = await client.joinLobby({
             lobbyCode: values.lobbyCode,
         })
 
         if (response.data && response.data.lobbyId) {
             router.push(`${LOBBY_ROUTER}/${response.data.lobbyId}`)
         } else {
-            toast.error("Error creating guest profile", {
+            toast.error("Error joining lobby", {
                 description: response.error?.message
             })
         }

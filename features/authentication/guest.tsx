@@ -17,10 +17,10 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { guestLogin } from "@/lib/auth/actions"
 import { generateRandomUsernameWithSuffix } from "@/lib/utils"
-import { clientServerGrpcInstance } from "@/grpc/servers/clientserver"
 import Link from "next/link"
 import { HOME_ROUTER } from "@/constants/routers"
 import { toast } from "sonner"
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
 
 const formSchema = z.object({
     fullName: z.string()
@@ -38,10 +38,12 @@ export function GuestForm() {
         },
     })
 
+    const { client } = useGrpcClient()
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         // Generate a random username
         const generatedUsername = generateRandomUsernameWithSuffix(values.fullName)
-        const response = await clientServerGrpcInstance.createGuestUser({
+        const response = await client.createGuestUser({
             fullName: values.fullName,
             username: generatedUsername,
         })

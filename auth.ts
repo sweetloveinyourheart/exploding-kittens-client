@@ -4,8 +4,8 @@ import NextAuth from "next-auth"
 import "next-auth/jwt"
 
 import CredentialsProvider from "next-auth/providers/credentials";
-import { clientServerGrpcInstance } from "./grpc/servers/clientserver";
 import { AUTH_GUEST_CREDENTIAL_PROVIDER } from "./constants/auth";
+import { useGrpcServer } from "./lib/hooks/grpc-server";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
@@ -21,7 +21,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     return null
                 }
 
-                const res = await clientServerGrpcInstance.guestLogin({
+                const clientServerGrpc = await useGrpcServer()
+                const res = await clientServerGrpc.guestLogin({
                     userId: credentials.userId as string,
                 })
 
@@ -43,7 +44,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         jwt({ token, trigger, session, account, user }) {
             if (trigger === "update") token.name = session.user.name
             if (account?.provider === "guest_login") {
-                return { ...token, accessToken: account.access_token, username: user.username }
+                return { ...token, accessToken: user.accessToken, username: user.username }
             }
             return token
         },
@@ -60,6 +61,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 declare module "next-auth" {
     interface User {
         username?: string
+        accessToken?: string
     }
 
     interface Session {
