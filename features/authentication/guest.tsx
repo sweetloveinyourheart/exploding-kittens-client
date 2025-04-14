@@ -15,12 +15,13 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { guestLogin } from "@/lib/auth/actions"
 import { generateRandomUsernameWithSuffix } from "@/lib/utils"
 import Link from "next/link"
 import { HOME_ROUTER } from "@/constants/routers"
 import { toast } from "sonner"
 import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { signIn } from "next-auth/react"
+import { AUTH_GUEST_CREDENTIAL_PROVIDER } from "@/constants/auth"
 
 const formSchema = z.object({
     fullName: z.string()
@@ -50,8 +51,13 @@ export function GuestForm() {
 
         if (response.data && response.data.user) {
             toast.success("Guest profile created, trying to signin ...")
+
             // login with created profile
-            await guestLogin({ userId: response.data.user.userId })
+            await signIn(AUTH_GUEST_CREDENTIAL_PROVIDER, {
+                redirectTo: HOME_ROUTER,
+                // form data
+                userId: response.data.user.userId,
+            })
         } else {
             toast.error("Error creating guest profile", {
                 description: response.error?.message

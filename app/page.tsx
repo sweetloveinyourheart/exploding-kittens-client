@@ -4,7 +4,7 @@ import { GUEST_REGISTER_ROUTER } from "@/constants/routers";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
-import Welcome from "@/components/welcome";
+import Welcome from "@/features/welcome/welcome";
 
 export default async function Home() {
   const session = await auth();

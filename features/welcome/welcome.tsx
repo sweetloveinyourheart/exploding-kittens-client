@@ -5,14 +5,14 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Input } from "./ui/input";
+import { Input } from "../../components/ui/input";
 import { signOut } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../../components/ui/avatar";
 import { User } from "next-auth";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "./ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../../components/ui/form";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LOBBY_ROUTER } from "@/constants/routers";
@@ -208,7 +208,7 @@ const JoinLobby: FunctionComponent = () => {
                     />
                     <div className="flex justify-end">
                         <Button type="submit">
-                            Create Lobby
+                            Join Lobby
                         </Button>
                     </div>
                 </div>

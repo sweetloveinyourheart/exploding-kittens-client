@@ -29,9 +29,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                 const data = res.data
                 if (data && data.token && data.user) {
                     return {
-                        id: data.user.userId!,
-                        username: data.user.username!,
                         name: data.user.fullName!,
+                        userId: data.user.userId!,
+                        username: data.user.username!,
                         accessToken: data.token,
                     };
                 }
@@ -44,13 +44,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         jwt({ token, trigger, session, account, user }) {
             if (trigger === "update") token.name = session.user.name
             if (account?.provider === "guest_login") {
-                return { ...token, accessToken: user.accessToken, username: user.username }
+                return { ...token, accessToken: user.accessToken, username: user.username, userId: user.userId }
             }
             return token
         },
         async session({ session, token }) {
             if (token?.accessToken) session.accessToken = token.accessToken
-            if (token?.username) session.user = { ...session.user, username: token.username }
+            if (token?.username) session.user = { ...session.user, username: token.username, userId: token.userId }
 
             return session
         },
@@ -60,6 +60,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
 declare module "next-auth" {
     interface User {
+        userId?: string
         username?: string
         accessToken?: string
     }
@@ -71,6 +72,7 @@ declare module "next-auth" {
 
 declare module "next-auth/jwt" {
     interface JWT {
+        userId?: string
         username?: string
         accessToken?: string
     }

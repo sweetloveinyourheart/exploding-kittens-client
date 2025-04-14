@@ -4,12 +4,16 @@ import {
     CreateLobbyResponse,
     CreateNewGuestUserRequest,
     CreateNewGuestUserResponse,
+    GetLobbyReply,
+    GetLobbyRequest,
     GuestLoginRequest,
     GuestLoginResponse,
     JoinLobbyRequest,
     JoinLobbyResponse,
     LeaveLobbyRequest,
-    LeaveLobbyResponse
+    LeaveLobbyResponse,
+    PlayerProfileRequest,
+    PlayerProfileResponse,
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
 import { createGrpcConnectTransport } from "../transport";
@@ -45,6 +49,15 @@ export class ClientServerGrpc {
         }
     }
 
+    async getPlayerProfile(request: GrpcRequest<PlayerProfileRequest>, options?: CallOptions): Promise<GrpcResponse<PlayerProfileResponse>> {
+        try {
+            const response = await this.client.getPlayerProfile(request, options)
+            return { data: response, error: null }
+        } catch (error) {
+            return { data: null, error: ConnectError.from(error) }
+        }
+    }
+
     async createNewLobby(request: GrpcRequest<CreateLobbyRequest>, options?: CallOptions): Promise<GrpcResponse<CreateLobbyResponse>> {
         try {
             const response = await this.client.createLobby(request, options)
@@ -70,5 +83,9 @@ export class ClientServerGrpc {
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
         }
+    }
+
+    streamLobby(request: GrpcRequest<GetLobbyRequest>, options?: CallOptions): AsyncIterable<GetLobbyReply> {
+        return this.client.streamLobby(request, options)
     }
 }

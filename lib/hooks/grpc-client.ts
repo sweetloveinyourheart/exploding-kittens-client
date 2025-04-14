@@ -1,6 +1,6 @@
 "use client"
 
-import { GrpcContext } from "@/contexts/grpcClient";
+import { GrpcContext } from "@/contexts/GrpcProvider";
 import { useContext } from "react";
 
 export const useGrpcClient = () => {

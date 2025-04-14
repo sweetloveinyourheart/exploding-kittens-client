@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import { GrpcProvider } from "@/contexts/grpcClient";
+import { GrpcProvider } from "@/contexts/GrpcProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
