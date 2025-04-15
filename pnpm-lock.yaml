@@ -859,7 +859,7 @@ packages:
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
   '@sweetloveinyourheart/exploding-kittens-client-core@1.0.0':
-    resolution: {integrity: sha512-93SEs/XvjH6yLvLXzFXnAHk07B6Np6vLbeXsRS23ZTMOaYTFIlyRTpgTShI4wkRMwh8uRZ+k2ZaXbUcXFb2HbQ==, tarball: https://npm.pkg.github.com/download/@sweetloveinyourheart/exploding-kittens-client-core/1.0.0/662301d96e2cea3af4372b7d60dfc39a0699b839}
+    resolution: {integrity: sha512-FVrkgtyGrjC6tDI65BSOoBkAa4BXB5rQc15VDapXqWA71Q1goKDoVF7qoPakXl+eGY4IaPjqypA/JHswPM8gEg==, tarball: https://npm.pkg.github.com/download/@sweetloveinyourheart/exploding-kittens-client-core/1.0.0/d6e042c7a5bb14feb07588e7d1cc8af092bb1516}
 
   '@tailwindcss/node@4.1.3':
     resolution: {integrity: sha512-H/6r6IPFJkCfBJZ2dKZiPJ7Ueb2wbL592+9bQEl2r73qbX6yGnmQVIfiUvDRB2YI0a3PWDrzUwkvQx1XW1bNkA==}

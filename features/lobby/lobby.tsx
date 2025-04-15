@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { HOME_ROUTER } from "@/constants/routers";
+import { GAME_ROUTER, HOME_ROUTER } from "@/constants/routers";
 
 interface GameLobbyProps {
     lobbyId: string
@@ -22,6 +22,7 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
     const { data: session } = useSession()
     const router = useRouter()
 
+    // Stream
     useEffect(() => {
         if (!isAuthenticated) {
             return
@@ -30,9 +31,7 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
         (async () => {
             try {
                 for await (const res of client.streamLobby({ lobbyId })) {
-                    if (res.lobby) {
-                        setLobby(res.lobby)
-                    }
+                    setLobby(res.lobby)
                 }
             } catch (error) {
                 toast("Unable to fetch lobby data")
@@ -40,17 +39,44 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
         })()
     }, [isAuthenticated])
 
+    // Listen to game started events
+    useEffect(() => {
+        if (lobby?.gameId) {
+            router.push(`${GAME_ROUTER}/${lobby.gameId}`)
+        }
+    }, [lobby?.gameId])
+
+    // Listen to user has left events
+    useEffect(() => {
+        const userId = session?.user?.userId;
+        if (lobby && userId && lobby.participants?.includes(userId)) {
+            router.push(HOME_ROUTER)
+        }
+    }, [lobby?.participants])
+
     const leaveLobby = async () => {
         const res = await client.leaveLobby({ lobbyId })
         if (res.error != null) {
             toast.error("Error leave lobby", {
-                description: res.error?.message
+                description: res.error.message
             })
             return
         }
-
-        router.push(HOME_ROUTER)
     }
+
+    const startGame = async () => {
+        const err = await client.startGame({ lobbyId })
+        if (err) {
+            toast.error("Error starting new game", {
+                description: err.message,
+            })
+            return
+        }
+    }
+
+    const canStartNewGame =
+        session?.user?.userId === lobby?.hostUserId &&
+        (lobby?.participants.length ?? 0) >= 2;
 
     return (
         <div className="h-screen flex flex-col items-center justify-center p-6 space-y-8">
@@ -78,14 +104,15 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
             </div>
 
             <div className="flex gap-3 mt-6">
-                <Button 
+                <Button
                     variant={"outline"}
                     onClick={leaveLobby}
                 >
                     Leave Lobby
                 </Button>
-                <Button 
-                    disabled={session?.user?.userId !== lobby?.hostUserId}
+                <Button
+                    disabled={!canStartNewGame}
+                    onClick={startGame}
                 >
                     Start Game
                 </Button>

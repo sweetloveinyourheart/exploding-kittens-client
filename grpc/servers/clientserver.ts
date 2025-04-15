@@ -14,6 +14,7 @@ import {
     LeaveLobbyResponse,
     PlayerProfileRequest,
     PlayerProfileResponse,
+    StartGameRequest,
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
 import { createGrpcConnectTransport } from "../transport";
@@ -87,5 +88,14 @@ export class ClientServerGrpc {
 
     streamLobby(request: GrpcRequest<GetLobbyRequest>, options?: CallOptions): AsyncIterable<GetLobbyReply> {
         return this.client.streamLobby(request, options)
+    }
+
+    async startGame(request: GrpcRequest<StartGameRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.startGame(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
+        }
     }
 }
