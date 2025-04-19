@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
+import { useGrpcClient } from "@/lib/grpc/hooks/grpc-client";
 import { User } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { FunctionComponent, useEffect, useState } from "react";
 

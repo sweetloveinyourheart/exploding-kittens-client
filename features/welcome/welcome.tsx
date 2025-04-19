@@ -16,7 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "../../compo
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { LOBBY_ROUTER } from "@/constants/routers";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
+import { useGrpcClient } from "@/lib/grpc/hooks/grpc-client";
 
 interface WelcomeProps {
     user: User

@@ -1,25 +1,24 @@
 "use client"
 
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
+import { useGrpcClient } from "@/lib/grpc/hooks/grpc-client";
 import { Lobby } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { FunctionComponent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import LobbyPaticipant from "./lobby-paticipant";
 import { Button } from "@/components/ui/button";
-import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { GAME_ROUTER, HOME_ROUTER } from "@/constants/routers";
 
 interface GameLobbyProps {
-    lobbyId: string
+    userId: string
+    lobbyData: string
 }
 
-const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
-    const [lobby, setLobby] = useState<Lobby>()
+const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => {
+    const [lobby, setLobby] = useState<Lobby>(JSON.parse(lobbyData))
 
     const { client, isAuthenticated } = useGrpcClient()
-    const { data: session } = useSession()
     const router = useRouter()
 
     // Stream
@@ -28,14 +27,21 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
             return
         }
 
+        // Start streaming when the grpc client is authenticated
         (async () => {
-            try {
-                for await (const res of client.streamLobby({ lobbyId })) {
-                    setLobby(res.lobby)
+            await client.streamLobbyWithCallBacks(
+                { lobbyId: lobby.lobbyId },
+                {
+                    onDataStreaming: (res) => {
+                        if (res.lobby) {
+                            setLobby(res.lobby)
+                        } else {
+                            router.push(HOME_ROUTER)
+                        }
+                    },
+                    onError: (err) => toast("Unable to fetch lobby data", { description: err.message })
                 }
-            } catch (error) {
-                toast("Unable to fetch lobby data")
-            }
+            )
         })()
     }, [isAuthenticated])
 
@@ -48,24 +54,25 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
 
     // Listen to user has left events
     useEffect(() => {
-        const userId = session?.user?.userId;
-        if (lobby && userId && lobby.participants?.includes(userId)) {
+        if (lobby && userId && !lobby.participants?.includes(userId)) {
             router.push(HOME_ROUTER)
         }
     }, [lobby?.participants])
 
     const leaveLobby = async () => {
-        const res = await client.leaveLobby({ lobbyId })
+        const res = await client.leaveLobby({ lobbyId: lobby.lobbyId })
         if (res.error != null) {
             toast.error("Error leave lobby", {
                 description: res.error.message
             })
             return
         }
+
+        router.push(HOME_ROUTER)
     }
 
     const startGame = async () => {
-        const err = await client.startGame({ lobbyId })
+        const err = await client.startGame({ lobbyId: lobby.lobbyId })
         if (err) {
             toast.error("Error starting new game", {
                 description: err.message,
@@ -75,7 +82,7 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ lobbyId }) => {
     }
 
     const canStartNewGame =
-        session?.user?.userId === lobby?.hostUserId &&
+        userId === lobby?.hostUserId &&
         (lobby?.participants.length ?? 0) >= 2;
 
     return (

@@ -19,7 +19,7 @@ import { generateRandomUsernameWithSuffix } from "@/lib/utils"
 import Link from "next/link"
 import { HOME_ROUTER } from "@/constants/routers"
 import { toast } from "sonner"
-import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { useGrpcClient } from "@/lib/grpc/hooks/grpc-client"
 import { signIn } from "next-auth/react"
 import { AUTH_GUEST_CREDENTIAL_PROVIDER } from "@/constants/auth"
 

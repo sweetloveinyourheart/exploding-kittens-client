@@ -68,6 +68,15 @@ export class ClientServerGrpc {
         }
     }
 
+    async getLobby(request: GrpcRequest<GetLobbyRequest>, options?: CallOptions): Promise<GrpcResponse<GetLobbyReply>> {
+        try {
+            const response = await this.client.getLobby(request, options)
+            return { data: response, error: null }
+        } catch (error) {
+            return { data: null, error: ConnectError.from(error) }
+        }
+    }
+
     async joinLobby(request: GrpcRequest<JoinLobbyRequest>, options?: CallOptions): Promise<GrpcResponse<JoinLobbyResponse>> {
         try {
             const response = await this.client.joinLobby(request, options)
@@ -86,8 +95,25 @@ export class ClientServerGrpc {
         }
     }
 
-    streamLobby(request: GrpcRequest<GetLobbyRequest>, options?: CallOptions): AsyncIterable<GetLobbyReply> {
+    private streamLobby(request: GrpcRequest<GetLobbyRequest>, options?: CallOptions): AsyncIterable<GetLobbyReply> {
         return this.client.streamLobby(request, options)
+    }
+
+    async streamLobbyWithCallBacks(
+        request: GrpcRequest<GetLobbyRequest>,
+        callback: {
+            onDataStreaming: (res: GetLobbyReply) => void,
+            onError: (err: ConnectError) => void,
+        },
+        options?: CallOptions,
+    ): Promise<void> {
+        try {
+            for await (const res of this.streamLobby(request, options)) {
+                callback.onDataStreaming(res)
+            }
+        } catch (error) {
+            callback.onError( ConnectError.from(error))
+        }
     }
 
     async startGame(request: GrpcRequest<StartGameRequest>, options?: CallOptions): Promise<ConnectError | null> {
