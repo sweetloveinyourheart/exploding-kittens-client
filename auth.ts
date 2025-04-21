@@ -5,7 +5,7 @@ import "next-auth/jwt"
 
 import CredentialsProvider from "next-auth/providers/credentials";
 import { AUTH_GUEST_CREDENTIAL_PROVIDER } from "./constants/auth";
-import { useGrpcServer } from "./lib/grpc/grpc-server";
+import { grpcServer } from "./lib/grpc/grpc-server";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
@@ -21,7 +21,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     return null
                 }
 
-                const clientServerGrpc = await useGrpcServer()
+                const clientServerGrpc = await grpcServer()
                 const res = await clientServerGrpc.guestLogin({
                     userId: credentials.userId as string,
                 })
