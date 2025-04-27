@@ -71,17 +71,17 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => 
         router.push(HOME_ROUTER)
     }
 
-    const startGame = async () => {
-        const err = await client.startGame({ lobbyId: lobby.lobbyId })
+    const startMatch = async () => {
+        const err = await client.startMatch({ lobbyId: lobby.lobbyId })
         if (err) {
-            toast.error("Error starting new game", {
+            toast.error("Error starting new match", {
                 description: err.message,
             })
             return
         }
     }
 
-    const canStartNewGame =
+    const canStartNewMatch =
         userId === lobby?.hostUserId &&
         (lobby?.participants.length ?? 0) >= 2;
 
@@ -118,8 +118,8 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => 
                     Leave Lobby
                 </Button>
                 <Button
-                    disabled={!canStartNewGame}
-                    onClick={startGame}
+                    disabled={!canStartNewMatch}
+                    onClick={startMatch}
                 >
                     Start Game
                 </Button>
