@@ -45,12 +45,12 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => 
         })()
     }, [isAuthenticated])
 
-    // Listen to game started events
+    // Listen to match started events
     useEffect(() => {
-        if (lobby?.gameId) {
-            router.push(`${GAME_ROUTER}/${lobby.gameId}`)
+        if (lobby?.matchId) {
+            router.push(`${GAME_ROUTER}/${lobby.matchId}`)
         }
-    }, [lobby?.gameId])
+    }, [lobby?.matchId])
 
     // Listen to user has left events
     useEffect(() => {
