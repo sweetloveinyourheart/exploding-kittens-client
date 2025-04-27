@@ -1,6 +1,6 @@
 "use client"
 
-import { useGrpcClient } from "@/lib/grpc/hooks/grpc-client";
+import { useGrpcClient } from "@/lib/hooks/grpc-client";
 import { Lobby } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { FunctionComponent, useEffect, useState } from "react";
 import { toast } from "sonner";

@@ -4,6 +4,8 @@ import {
     CreateLobbyResponse,
     CreateNewGuestUserRequest,
     CreateNewGuestUserResponse,
+    GetGameMetaDataRequest,
+    GetGameMetaDataResponse,
     GetLobbyReply,
     GetLobbyRequest,
     GuestLoginRequest,
@@ -14,6 +16,7 @@ import {
     LeaveLobbyResponse,
     PlayerProfileRequest,
     PlayerProfileResponse,
+    RetrieveCardsDataResponse,
     StartMatchRequest,
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
@@ -112,7 +115,7 @@ export class ClientServerGrpc {
                 callback.onDataStreaming(res)
             }
         } catch (error) {
-            callback.onError( ConnectError.from(error))
+            callback.onError(ConnectError.from(error))
         }
     }
 
@@ -122,6 +125,24 @@ export class ClientServerGrpc {
             return null
         } catch (error) {
             return ConnectError.from(error)
+        }
+    }
+
+    async retrieveCardsData(options?: CallOptions): Promise<GrpcResponse<RetrieveCardsDataResponse>> {
+        try {
+            const response = await this.client.retrieveCardsData({}, options)
+            return { data: response, error: null }
+        } catch (error) {
+            return { data: null, error: ConnectError.from(error) }
+        }
+    }
+
+    async getGameMetadata(request: GrpcRequest<GetGameMetaDataRequest>, options?: CallOptions): Promise<GrpcResponse<GetGameMetaDataResponse>> {
+        try {
+            const response = await this.client.getGameMetaData(request, options)
+            return { data: response, error: null }
+        } catch (error) {
+            return { data: null, error: ConnectError.from(error) }
         }
     }
 }
