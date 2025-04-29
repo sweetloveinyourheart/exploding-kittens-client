@@ -14,10 +14,12 @@ import {
     JoinLobbyResponse,
     LeaveLobbyRequest,
     LeaveLobbyResponse,
-    PlayerProfileRequest,
-    PlayerProfileResponse,
+    PlayersProfileRequest,
+    PlayersProfileResponse,
     RetrieveCardsDataResponse,
     StartMatchRequest,
+    StreamGameReply,
+    StreamGameRequest,
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
 import { createGrpcConnectTransport } from "../transport";
@@ -53,9 +55,9 @@ export class ClientServerGrpc {
         }
     }
 
-    async getPlayerProfile(request: GrpcRequest<PlayerProfileRequest>, options?: CallOptions): Promise<GrpcResponse<PlayerProfileResponse>> {
+    async getPlayersProfile(request: GrpcRequest<PlayersProfileRequest>, options?: CallOptions): Promise<GrpcResponse<PlayersProfileResponse>> {
         try {
-            const response = await this.client.getPlayerProfile(request, options)
+            const response = await this.client.getPlayersProfile(request, options)
             return { data: response, error: null }
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
@@ -143,6 +145,27 @@ export class ClientServerGrpc {
             return { data: response, error: null }
         } catch (error) {
             return { data: null, error: ConnectError.from(error) }
+        }
+    }
+
+    private streamGame(request: GrpcRequest<StreamGameRequest>, options?: CallOptions): AsyncIterable<StreamGameReply> {
+        return this.client.streamGame(request, options)
+    }
+
+    async streamGameWithCallBacks(
+        request: GrpcRequest<StreamGameRequest>,
+        callback: {
+            onDataStreaming: (res: StreamGameReply) => void,
+            onError: (err: ConnectError) => void,
+        },
+        options?: CallOptions,
+    ): Promise<void> {
+        try {
+            for await (const res of this.streamGame(request, options)) {
+                callback.onDataStreaming(res)
+            }
+        } catch (error) {
+            callback.onError(ConnectError.from(error))
         }
     }
 }

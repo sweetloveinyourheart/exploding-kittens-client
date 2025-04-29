@@ -2,6 +2,7 @@
 
 import { auth } from "@/auth"
 import { HOME_ROUTER } from "@/constants/routers"
+import GamePlay from "@/features/game/game";
 import { grpcServer } from "@/lib/grpc/grpc-server";
 import { redirect } from "next/navigation"
 
@@ -13,7 +14,7 @@ export default async function GamePage({ params }: GamePageProps) {
     const { id } = await params
 
     const session = await auth()
-    if (!session) {
+    if (!session || !session.user?.userId) {
         redirect(HOME_ROUTER)
     }
 
@@ -23,9 +24,22 @@ export default async function GamePage({ params }: GamePageProps) {
         redirect(HOME_ROUTER)
     }
 
+    const meta = res.data.meta
+
+    const getPlayerRes = await clientServer.getPlayersProfile({ userIds: meta.players })
+    if (!getPlayerRes.data || getPlayerRes.data.users.length === 0) {
+        redirect(HOME_ROUTER)
+    }
+
+    const players = getPlayerRes.data.users
+
     return (
-        <main>
-            GAME ID: {id}
-        </main>
+        <>
+            <GamePlay
+                gameId={meta.gameId}
+                userId={session.user.userId}
+                players={JSON.stringify(players)}
+            />
+        </>
     )
 }

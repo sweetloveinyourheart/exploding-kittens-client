@@ -18,9 +18,9 @@ const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId }
 
   useEffect(() => {
     (async () => {
-      const response = await client.getPlayerProfile({ userId: playerId })
-      if (response.data && response.data.user) {
-        setPlayer(response.data.user)
+      const response = await client.getPlayersProfile({ userIds: [playerId] })
+      if (response.data && response.data.users.length > 0) {
+        setPlayer(response.data.users[0])
       } else {
         setPlayer(null)
       }

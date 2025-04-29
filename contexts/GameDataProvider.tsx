@@ -6,7 +6,7 @@ import { createContext, FC, ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 interface GameDataContextType {
-    cards: Card[]
+    cards: Map<string, Card>
 }
 
 export const GameDataContext = createContext<GameDataContextType | undefined>(undefined);
@@ -18,7 +18,7 @@ interface GameDataProviderProps {
 export const GameDataProvider: FC<GameDataProviderProps> = ({ children }) => {
     const { client, isAuthenticated } = useGrpcClient()
 
-    const [cards, setCards] = useState<Card[]>([])
+    const [cards, setCards] = useState<Map<string, Card>>(new Map())
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -29,7 +29,11 @@ export const GameDataProvider: FC<GameDataProviderProps> = ({ children }) => {
                     return
                 }
 
-                setCards(data.cards)
+                const cardMap = new Map<string, Card>()
+                data.cards.forEach(card => {
+                    cardMap.set(card.cardId, card)
+                })
+                setCards(cardMap)
             })()
         }
     }, [isAuthenticated])
