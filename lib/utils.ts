@@ -10,3 +10,7 @@ export function generateRandomUsernameWithSuffix(name: string): string {
   const randomNumber = Math.floor(1000 + Math.random() * 9000); // 4-digit random number
   return `${trimmedName}_${randomNumber}`;
 }
+
+export function padTo2Digits(num: number): string {
+  return String(num).padStart(2, '0');
+}

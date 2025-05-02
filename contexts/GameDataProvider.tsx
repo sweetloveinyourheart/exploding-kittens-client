@@ -7,6 +7,7 @@ import { toast } from "sonner";
 
 interface GameDataContextType {
     cards: Map<string, Card>
+    isLoading: boolean
 }
 
 export const GameDataContext = createContext<GameDataContextType | undefined>(undefined);
@@ -19,6 +20,7 @@ export const GameDataProvider: FC<GameDataProviderProps> = ({ children }) => {
     const { client, isAuthenticated } = useGrpcClient()
 
     const [cards, setCards] = useState<Map<string, Card>>(new Map())
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -26,6 +28,7 @@ export const GameDataProvider: FC<GameDataProviderProps> = ({ children }) => {
                 const { data, error } = await client.retrieveCardsData()
                 if (error || !data?.cards) {
                     toast("Unable to retrieve cards data")
+                    setIsLoading(false)
                     return
                 }
 
@@ -34,12 +37,13 @@ export const GameDataProvider: FC<GameDataProviderProps> = ({ children }) => {
                     cardMap.set(card.cardId, card)
                 })
                 setCards(cardMap)
+                setIsLoading(false)
             })()
         }
     }, [isAuthenticated])
 
     return (
-        <GameDataContext.Provider value={{ cards }}>
+        <GameDataContext.Provider value={{ cards, isLoading }}>
             {children}
         </GameDataContext.Provider>
     )

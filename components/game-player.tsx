@@ -10,7 +10,7 @@ interface GamePlayerProps {
 const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player }) => {
     return (
         <div className="flex flex-col items-center">
-            <Card className="text-white p-2 rounded-xl min-w-[200px] text-center">
+            <Card className="text-white p-2 rounded-xl min-w-[150px] text-center">
                 <div className="text-2xl"><SunIcon /></div>
                 <div className="text-sm">{player.name}</div>
                 <div className="text-xs">{player.count} cards</div>

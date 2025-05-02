@@ -3,13 +3,13 @@
 import DiscardPile from "@/components/discard-pile";
 import GameDesk from "@/components/game-desk";
 import GamePlayer from "@/components/game-player";
-import PlayerHand from "@/components/player-hand";
 import { useGameDataProvider } from "@/lib/hooks/game-data-provider";
 import { useGrpcClient } from "@/lib/hooks/grpc-client";
 import { DeskState, PlayerState, UserState } from "@/types/game";
 import { Card, Game_Desk, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { FunctionComponent, useEffect, useState } from "react";
 import { toast } from "sonner";
+import Hand from "./hand/hand";
 
 interface GamePlayProps {
     gameId: string
@@ -27,11 +27,11 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
     const [userState, setUserState] = useState<UserState>({ active: true, cards: [], name: "Kitten" })
 
     const { client, isAuthenticated } = useGrpcClient()
-    const { cards } = useGameDataProvider()
+    const { cards, isLoading } = useGameDataProvider()
 
     // Stream
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!isAuthenticated || isLoading) {
             return
         }
 
@@ -53,7 +53,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
                 }
             )
         })()
-    }, [isAuthenticated])
+    }, [isAuthenticated, isLoading])
 
     const buildPlayerData = (gamePlayers: Game_Player[], gamePlayerHands: Record<string, Game_PlayerHand>) => {
         const buildData = (playerHand: Game_PlayerHand): Card[] => {
@@ -109,7 +109,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
     }
 
     return (
-        <div className="flex flex-col h-screen p-4 relative overflow-hidden">
+        <div className="flex flex-col h-screen relative overflow-hidden">
             {/* Top Players */}
             <div className="flex justify-center gap-6 mb-6 h-1/6">
                 {playerStates.map((player, index) => (
@@ -127,8 +127,8 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
             </div>
 
             {/* Bottom Hand */}
-            <div className="relative flex justify-center mt-8 h-1/6">
-                <PlayerHand cards={userState.cards} />
+            <div className="flex flex-col justify-center mt-8 h-1/6 p-6">
+                <Hand userState={userState} />
             </div>
         </div>
     );
