@@ -1,15 +1,14 @@
 "use client";
 
-import DiscardPile from "@/components/discard-pile";
-import GameDesk from "@/components/game-desk";
-import GamePlayer from "@/components/game-player";
 import { useGameDataProvider } from "@/lib/hooks/game-data-provider";
 import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { DeskState, PlayerState, UserState } from "@/types/game";
-import { Card, Game_Desk, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core";
+import { DeskState, GameState, PlayerState, UserState } from "@/types/game";
+import { Card, Game, Game_Desk, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { FunctionComponent, useEffect, useState } from "react";
 import { toast } from "sonner";
-import Hand from "./hand/hand";
+import Hand from "./components/hand/hand";
+import CenterBoard from "./components/center-board/center-board";
+import GameHUD from "./components/game-hud/game-hud";
 
 interface GamePlayProps {
     gameId: string
@@ -20,11 +19,11 @@ interface GamePlayProps {
 const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players }) => {
     const playersData: User[] = JSON.parse(players)
 
-    const [playerStates, setPlayerStates] = useState<PlayerState[]>([])
+    const [gameState, setGameState] = useState<GameState>()
     const [deskState, setDeskState] = useState<DeskState>()
-    const [discardPile, setDiscardPile] = useState<Card[]>([])
-
-    const [userState, setUserState] = useState<UserState>({ active: true, cards: [], name: "Kitten" })
+    
+    const [playerStates, setPlayerStates] = useState<PlayerState[]>([])
+    const [userState, setUserState] = useState<UserState>({ userId, active: true, cards: [], name: "Kitten" })
 
     const { client, isAuthenticated } = useGrpcClient()
     const { cards, isLoading } = useGameDataProvider()
@@ -42,9 +41,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
                 {
                     onDataStreaming: (res) => {
                         if (res.gameState) {
-                            buildPlayerData(res.gameState.players, res.gameState.playerHands)
-                            buildDeskData(res.gameState.desk)
-                            buildDiscardPileData(res.gameState.discardPile)
+                            buildGameData(res.gameState)
                         } else {
                             toast("Stream error")
                         }
@@ -55,7 +52,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
         })()
     }, [isAuthenticated, isLoading])
 
-    const buildPlayerData = (gamePlayers: Game_Player[], gamePlayerHands: Record<string, Game_PlayerHand>) => {
+    const _buildPlayerData = (gamePlayers: Game_Player[], gamePlayerHands: Record<string, Game_PlayerHand>) => {
         const buildData = (playerHand: Game_PlayerHand): Card[] => {
             const userCards: Card[] = []
             playerHand.hands.forEach(cardId => {
@@ -76,12 +73,14 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
             if (player.playerId === userId) {
                 const userCards = buildData(playerHand)
                 setUserState({
+                    userId: player.playerId,
                     active: player.active,
                     cards: userCards,
                     name: playerInfo?.fullName || "Kitten",
                 })
             } else {
                 states.push({
+                    playerId: player.playerId,
                     active: player.active,
                     count: playerHand?.remainingCards || 0,
                     name: playerInfo?.fullName || "Kitten",
@@ -92,43 +91,68 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
         setPlayerStates(states)
     }
 
-    const buildDeskData = (gameDesk: Game_Desk | undefined) => {
-        setDeskState(gameDesk)
-    }
+    const _buildDeskData = (gameDesk: Game_Desk | undefined) => {
+        if (!gameDesk) {
+            return;
+        }
 
-    const buildDiscardPileData = (gameDiscardPile: string[]) => {
+        const { discardPile, ...desk } = gameDesk
+
         const discardCards: Card[] = []
-        gameDiscardPile.forEach(cardId => {
+        discardPile.forEach(cardId => {
             const cardDetail = cards.get(cardId)
             if (cardDetail) {
                 discardCards.push(cardDetail)
             }
         })
 
-        setDiscardPile(discardCards)
+        setDeskState({
+            ...desk,
+            discardPile: discardCards,
+        })
+    }
+
+    const buildGameData = (game: Game) => {
+        setGameState(s => ({
+            ...s,
+            gameId: game.gameId,
+            gamePhase: game.gamePhase,
+            playerTurn: game.playerTurn,
+            executingAction: game.executingAction,
+        }))
+
+        _buildPlayerData(game.players, game.playerHands)
+        _buildDeskData(game.desk)
+    }
+
+    if (!gameState || !deskState || isLoading) {
+        return <>Loading ...</>
     }
 
     return (
         <div className="flex flex-col h-screen relative overflow-hidden">
-            {/* Top Players */}
-            <div className="flex justify-center gap-6 mb-6 h-1/6">
-                {playerStates.map((player, index) => (
-                    <GamePlayer player={player} key={`${player.name}_${index}`} />
-                ))}
+            {/* HUD */}
+            <div className="flex justify-between mb-6 h-1/6">
+                <GameHUD 
+                    gameState={gameState}
+                    playerStates={playerStates}
+                    playersData={playersData}
+                    userId={userId}
+                />
             </div>
 
             {/* Center Board */}
-            <div className="flex-1 flex justify-center items-center gap-12">
-                {/* Deck */}
-                <GameDesk desk={deskState} />
-
-                {/* Discard Pile */}
-                <DiscardPile discardPile={discardPile} />
+            <div className="flex-1">
+                <CenterBoard deskState={deskState} />
             </div>
 
             {/* Bottom Hand */}
             <div className="flex flex-col justify-center mt-8 h-1/6 p-6">
-                <Hand userState={userState} />
+                <Hand
+                    gameState={gameState}
+                    cardData={cards}
+                    userState={userState}
+                />
             </div>
         </div>
     );

@@ -1,0 +1,13 @@
+export const ExplodingKitten = "exploding_kitten";
+export const Defuse = "defuse";
+export const Nope = "nope";
+export const Attack = "attack";
+export const Skip = "skip";
+export const Favor = "favor";
+export const Shuffle = "shuffle";
+export const SeeTheFuture = "see_the_future";
+export const TacoCat = "taco_cat";
+export const Catermelon = "catermelon";
+export const HairyPotatoCat = "hairy_potato_cat";
+export const RainbowRalphingCat = "rainbow_ralphing_cat";
+export const BeardCat = "beard_cat";

@@ -20,6 +20,8 @@ import {
     StartMatchRequest,
     StreamGameReply,
     StreamGameRequest,
+    PlayCardsRequest,
+    ExecuteActionRequest,
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
 import { createGrpcConnectTransport } from "../transport";
@@ -166,6 +168,24 @@ export class ClientServerGrpc {
             }
         } catch (error) {
             callback.onError(ConnectError.from(error))
+        }
+    }
+
+    async PlayCards(request: GrpcRequest<PlayCardsRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.playCards(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
+        }
+    }
+
+    async ExecuteAction(request: GrpcRequest<ExecuteActionRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.executeAction(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
         }
     }
 }

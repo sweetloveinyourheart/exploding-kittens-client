@@ -11,8 +11,11 @@ interface PlayerHandProps {
 
 export function visualizeCardId(cardId: string, index: number): string {
     return `${cardId}_${padTo2Digits(index)}`
-  }
-  
+}
+
+export function getCardIdFromVisualizeCard(visualizeCardId: string): string {
+    return visualizeCardId.split("_")[0]
+}
 
 const PlayerHand: FunctionComponent<PlayerHandProps> = ({ cards, selectedCards, onSelectCard }) => {
     return (
