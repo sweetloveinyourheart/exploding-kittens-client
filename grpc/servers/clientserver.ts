@@ -21,7 +21,11 @@ import {
     StreamGameReply,
     StreamGameRequest,
     PlayCardsRequest,
-    ExecuteActionRequest,
+    PeekCardsRequest,
+    PeekCardsResponse,
+    SelectAffectedPlayerRequest,
+    GiveCardRequest,
+
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
 import { createGrpcConnectTransport } from "../transport";
@@ -180,9 +184,27 @@ export class ClientServerGrpc {
         }
     }
 
-    async ExecuteAction(request: GrpcRequest<ExecuteActionRequest>, options?: CallOptions): Promise<ConnectError | null> {
+    async PeekCards(request: GrpcRequest<PeekCardsRequest>, options?: CallOptions): Promise<GrpcResponse<PeekCardsResponse>> {
         try {
-            await this.client.executeAction(request, options)
+            const response = await this.client.peekCards(request, options)
+            return { data: response, error: null }
+        } catch (error) {
+            return { data: null, error: ConnectError.from(error) }
+        }
+    }
+
+    async SelectAffectedPlayer(request: GrpcRequest<SelectAffectedPlayerRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.selectAffectedPlayer(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
+        }
+    }
+
+    async GiveCard(request: GrpcRequest<GiveCardRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.giveCard(request, options)
             return null
         } catch (error) {
             return ConnectError.from(error)

@@ -1,6 +1,7 @@
 import { DEFAULT_TRANSPORT_BASE_URL } from "@/constants/transport";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { createAuthInterceptor, createLoggerInterceptor } from "./interceptors/auth";
+import { createAuthInterceptor } from "./interceptors/auth";
+import { createLoggerInterceptor } from "./interceptors/logger";
 
 type GrpcConnectTransportOpts = {
   accessToken?: string

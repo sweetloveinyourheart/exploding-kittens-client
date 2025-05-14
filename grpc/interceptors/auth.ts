@@ -7,9 +7,3 @@ export const createAuthInterceptor = (accessToken?: string): Interceptor => (nex
 
     return next(req);
 };
-
-export const createLoggerInterceptor = (): Interceptor => (next) => async (req) => {
-    console.log(`sending message to ${req.url}`);
-    return await next(req);
-};
-
