@@ -1,4 +1,5 @@
 import { GameDataProvider } from "@/contexts/GameDataProvider";
+import { GameActionProvider } from "@/features/game/contexts/GameAction";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,7 +11,9 @@ export default function LobbyLayout({ children }: { children: React.ReactNode })
     return (
         <>
             <GameDataProvider>
-                {children}
+                <GameActionProvider>
+                    {children}
+                </GameActionProvider>
             </GameDataProvider>
         </>
     )

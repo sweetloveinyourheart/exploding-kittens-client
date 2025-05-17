@@ -1,13 +1,15 @@
-export const ExplodingKitten = "exploding_kitten";
-export const Defuse = "defuse";
-export const Nope = "nope";
-export const Attack = "attack";
-export const Skip = "skip";
-export const Favor = "favor";
-export const Shuffle = "shuffle";
-export const SeeTheFuture = "see_the_future";
-export const TacoCat = "taco_cat";
-export const Catermelon = "catermelon";
-export const HairyPotatoCat = "hairy_potato_cat";
-export const RainbowRalphingCat = "rainbow_ralphing_cat";
-export const BeardCat = "beard_cat";
+export enum Card {
+    ExplodingKitten = "exploding_kitten",
+    Defuse = "defuse",
+    Nope = "nope",
+    Attack = "attack",
+    Skip = "skip",
+    Favor = "favor",
+    Shuffle = "shuffle",
+    SeeTheFuture = "see_the_future",
+    TacoCat = "taco_cat",
+    Catermelon = "catermelon",
+    HairyPotatoCat = "hairy_potato_cat",
+    RainbowRalphingCat = "rainbow_ralphing_cat",
+    BeardCat = "beard_cat",
+}

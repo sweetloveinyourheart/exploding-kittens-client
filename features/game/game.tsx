@@ -9,6 +9,13 @@ import { toast } from "sonner";
 import Hand from "./components/hand/hand";
 import CenterBoard from "./components/center-board/center-board";
 import GameHUD from "./components/game-hud/game-hud";
+import { useGameAction } from "./hooks/game-action";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { CardEffect } from "@/constants/card-effects";
+import SeeTheFuture from "./components/actions/see-the-future";
+import StealNamedCard from "./components/actions/steal-named-card";
+import { getLabelForEffect } from "./helpers/play";
+import StealRandomCard from "./components/actions/steal-random-card";
 
 interface GamePlayProps {
     gameId: string
@@ -21,36 +28,13 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
 
     const [gameState, setGameState] = useState<GameState>()
     const [deskState, setDeskState] = useState<DeskState>()
-    
+
     const [playerStates, setPlayerStates] = useState<PlayerState[]>([])
     const [userState, setUserState] = useState<UserState>({ userId, active: true, cards: [], name: "Kitten" })
 
     const { client, isAuthenticated } = useGrpcClient()
     const { cards, isLoading } = useGameDataProvider()
-
-    // Stream
-    useEffect(() => {
-        if (!isAuthenticated || isLoading) {
-            return
-        }
-
-        // Start streaming when the grpc client is authenticated
-        (async () => {
-            await client.streamGameWithCallBacks(
-                { gameId: gameId },
-                {
-                    onDataStreaming: (res) => {
-                        if (res.gameState) {
-                            buildGameData(res.gameState)
-                        } else {
-                            toast("Stream error")
-                        }
-                    },
-                    onError: (err) => toast("Unable to fetch lobby data", { description: err.message })
-                }
-            )
-        })()
-    }, [isAuthenticated, isLoading])
+    const { isOpen, executingAction, onGameActionChange } = useGameAction()
 
     const _buildPlayerData = (gamePlayers: Game_Player[], gamePlayerHands: Record<string, Game_PlayerHand>) => {
         const buildData = (playerHand: Game_PlayerHand): Card[] => {
@@ -119,21 +103,63 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
             gamePhase: game.gamePhase,
             playerTurn: game.playerTurn,
             executingAction: game.executingAction,
+            affectedPlayer: game.affectedPlayer,
         }))
 
         _buildPlayerData(game.players, game.playerHands)
         _buildDeskData(game.desk)
     }
 
+    // Stream
+    useEffect(() => {
+        if (!isAuthenticated || isLoading) {
+            return
+        }
+
+        // Start streaming when the grpc client is authenticated
+        (async () => {
+            await client.streamGameWithCallBacks(
+                { gameId: gameId },
+                {
+                    onDataStreaming: (res) => {
+                        if (res.gameState) {
+                            buildGameData(res.gameState)
+                        } else {
+                            toast("Stream error")
+                        }
+                    },
+                    onError: (err) => toast("Unable to fetch lobby data", { description: err.message })
+                }
+            )
+        })()
+    }, [isAuthenticated, isLoading])
+
     if (!gameState || !deskState || isLoading) {
         return <>Loading ...</>
+    }
+
+    const renderGameAction = () => {
+        switch (executingAction) {
+            case CardEffect.PeekCards:
+                return <SeeTheFuture gameId={gameState.gameId} deskId={deskState.deskId} />
+
+            case CardEffect.StealRandomCard:
+                const affectedPlayer = playerStates.find(playerState => playerState.playerId === gameState.affectedPlayer)
+                return <StealRandomCard gameId={gameState.gameId} affectedPlayer={affectedPlayer!}/>
+        
+            case CardEffect.StealNamedCard:
+                return <StealNamedCard gameId={gameState.gameId}/>
+
+            default:
+                return null
+        }
     }
 
     return (
         <div className="flex flex-col h-screen relative overflow-hidden">
             {/* HUD */}
-            <div className="flex justify-between mb-6 h-1/6">
-                <GameHUD 
+            <div className="flex flex-col mb-6 h-1/6">
+                <GameHUD
                     gameState={gameState}
                     playerStates={playerStates}
                     playersData={playersData}
@@ -143,17 +169,30 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
 
             {/* Center Board */}
             <div className="flex-1">
-                <CenterBoard deskState={deskState} />
+                <CenterBoard
+                    gameState={gameState}
+                    deskState={deskState}
+                    userId={userId}
+                />
             </div>
 
             {/* Bottom Hand */}
-            <div className="flex flex-col justify-center mt-8 h-1/6 p-6">
+            <div className="flex flex-col mt-8 h-1/6 p-6">
                 <Hand
                     gameState={gameState}
-                    cardData={cards}
                     userState={userState}
                 />
             </div>
+
+            {/* Game Action Dialog */}
+            <Dialog open={isOpen} onOpenChange={onGameActionChange}>
+                <DialogContent className="sm:max-w-[425px] md:max-w-[625px] lg:max-w-[825px]">
+                    <DialogHeader>
+                        <DialogTitle>{getLabelForEffect(gameState.executingAction as CardEffect)}</DialogTitle>
+                    </DialogHeader>
+                    {renderGameAction()}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

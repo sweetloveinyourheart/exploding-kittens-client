@@ -1,4 +1,4 @@
-import * as Card from '../constants/cards';
+import { Card } from '../constants/cards';
 
 // Cards that must be played alone
 export const MustPlayAlone: Record<string, boolean> = {

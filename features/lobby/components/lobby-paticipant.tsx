@@ -14,9 +14,13 @@ interface LobbyPaticipantsProps {
 const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId }) => {
   const [player, setPlayer] = useState<User | null>(null)
 
-  const { client } = useGrpcClient()
+  const { client, isAuthenticated } = useGrpcClient()
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return
+    }
+
     (async () => {
       const response = await client.getPlayersProfile({ userIds: [playerId] })
       if (response.data && response.data.users.length > 0) {
@@ -25,7 +29,7 @@ const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId }
         setPlayer(null)
       }
     })()
-  }, [client])
+  }, [isAuthenticated])
 
   if (player) {
     return (

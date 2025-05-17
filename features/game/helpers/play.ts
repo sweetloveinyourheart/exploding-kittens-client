@@ -1,5 +1,5 @@
 import { Game_Phase, User } from "@sweetloveinyourheart/exploding-kittens-client-core";
-import { labelMap } from "@/constants/card-effects"
+import { CardEffect, cardEffectLabelMap } from "@/constants/card-effects"
 
 export function gamePhaseToText(phase: Game_Phase): string {
     switch (phase) {
@@ -34,7 +34,7 @@ export function getPlayerTurnName(userId: string, playerId: string, playersData:
 }
 
 
-export function getLabelForEffect(key: string): string {
-    return labelMap[key] || key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+export function getLabelForEffect(key: CardEffect): string {
+    return cardEffectLabelMap[key] || key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 

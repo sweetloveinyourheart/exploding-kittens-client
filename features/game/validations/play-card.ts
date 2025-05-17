@@ -1,4 +1,4 @@
-import * as Card from "@/constants/cards"
+import { Card } from "@/constants/cards"
 import { ComboCards, MustPlayAlone } from "@/constants/card-rules"
 
 type ValidationResult = {

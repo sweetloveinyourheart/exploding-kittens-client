@@ -1,1 +1,3 @@
 export const AUTH_GUEST_CREDENTIAL_PROVIDER = "guest_login"
+
+export const NIL_USER_ID = "00000000-0000-0000-0000-000000000000"

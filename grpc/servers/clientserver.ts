@@ -25,6 +25,7 @@ import {
     PeekCardsResponse,
     SelectAffectedPlayerRequest,
     GiveCardRequest,
+    StealCardRequest,
 
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
@@ -196,6 +197,15 @@ export class ClientServerGrpc {
     async SelectAffectedPlayer(request: GrpcRequest<SelectAffectedPlayerRequest>, options?: CallOptions): Promise<ConnectError | null> {
         try {
             await this.client.selectAffectedPlayer(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
+        }
+    }
+
+    async StealCard(request: GrpcRequest<StealCardRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.stealCard(request, options)
             return null
         } catch (error) {
             return ConnectError.from(error)

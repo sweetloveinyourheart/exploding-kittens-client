@@ -4,7 +4,7 @@ import { useGrpcClient } from "@/lib/hooks/grpc-client";
 import { Lobby } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { FunctionComponent, useEffect, useState } from "react";
 import { toast } from "sonner";
-import LobbyPaticipant from "./lobby-paticipant";
+import LobbyPaticipant from "./components/lobby-paticipant";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";

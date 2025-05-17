@@ -18,7 +18,7 @@ type DeskState = Pick<Game_Desk, 'deskId' | 'remainingCards'> & {
     discardPile: Card[]
 }
 
-type GameState = Pick<Game, 'gameId' | 'gamePhase' | 'playerTurn' | 'executingAction'> & {}
+type GameState = Pick<Game, 'gameId' | 'gamePhase' | 'playerTurn' | 'executingAction' | 'affectedPlayer'> & {}
 
 export type {
     PlayerState,

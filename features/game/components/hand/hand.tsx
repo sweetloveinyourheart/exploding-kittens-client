@@ -1,22 +1,24 @@
 import PlayerHand, { getCardIdFromVisualizeCard, visualizeCardId } from "@/components/player-hand";
 import { Button } from "@/components/ui/button";
 import { GameState, UserState } from "@/types/game";
-import { Card } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { FunctionComponent, useState } from "react";
 import { ValidateCardPlay } from "../../validations/play-card";
 import { toast } from "sonner";
 import { useGrpcClient } from "@/lib/hooks/grpc-client";
+import { CardEffect } from "@/constants/card-effects";
+import { useGameDataProvider } from "@/lib/hooks/game-data-provider";
 
 interface HandProps {
     gameState: GameState
     userState: UserState
-    cardData: Map<string, Card>
 }
 
-const Hand: FunctionComponent<HandProps> = ({ cardData, userState, gameState }) => {
+const Hand: FunctionComponent<HandProps> = ({ userState, gameState }) => {
     const [selectedCards, setSelectedCards] = useState<string[]>([])
 
     const { client, isAuthenticated } = useGrpcClient()
+    const { cards, isLoading } = useGameDataProvider()
+
 
     const onSelectCard = (cardId: string, index: number) => {
         const isExists = selectedCards.includes(visualizeCardId(cardId, index))
@@ -27,6 +29,7 @@ const Hand: FunctionComponent<HandProps> = ({ cardData, userState, gameState }) 
         }
     }
 
+    const canPlayCard = gameState.playerTurn === userState.userId
     const onPlayCard = async () => {
         if (!isAuthenticated) {
             return
@@ -34,7 +37,7 @@ const Hand: FunctionComponent<HandProps> = ({ cardData, userState, gameState }) 
 
         const cardIds = selectedCards.map(cardId => getCardIdFromVisualizeCard(cardId))
         const cardCodes = cardIds
-            .map(cardId => cardData.get(cardId)?.code)
+            .map(cardId => cards.get(cardId)?.code)
             .filter(cardCode => cardCode !== undefined)
 
         const { valid, error } = ValidateCardPlay(cardCodes)
@@ -53,6 +56,35 @@ const Hand: FunctionComponent<HandProps> = ({ cardData, userState, gameState }) 
         setSelectedCards([])
     }
 
+    const canGiveCard = gameState.playerTurn !== userState.userId 
+        && gameState.affectedPlayer === userState.userId 
+        && gameState.executingAction === CardEffect.StealCard
+    const onGiveCard = async () => {
+        if (!isAuthenticated) {
+            return
+        }
+
+        const cardIds = selectedCards.map(cardId => getCardIdFromVisualizeCard(cardId))
+        if (cardIds.length === 0) {
+            return
+        }
+
+        const err = await client.GiveCard({
+            gameId: gameState.gameId,
+            cardId: cardIds[0]
+        })
+
+        if (err) {
+            toast("Error giving card", { description: err.message })
+        }
+
+        setSelectedCards([])
+    }
+
+    if (!isAuthenticated || isLoading) {
+        return <>Loading ...</>
+    }
+
     return (
         <div className="flex justify-between">
             <div className="flex flex-col justify-center">
@@ -67,18 +99,23 @@ const Hand: FunctionComponent<HandProps> = ({ cardData, userState, gameState }) 
                 />
             </div>
             <div>
-                {gameState.playerTurn !== userState.userId && (
+                {canPlayCard && (
                     <div className="flex flex-col gap-2 justify-center">
                         <Button
                             onClick={onPlayCard}
                             disabled={selectedCards.length === 0}
                         >
-                            Play
+                            Play Card
                         </Button>
+                    </div>
+                )}
+                {canGiveCard && (
+                    <div className="flex flex-col gap-2 justify-center">
                         <Button
-                            disabled={userState.cards.length === 0}
+                            onClick={onGiveCard}
+                            disabled={selectedCards.length === 0}
                         >
-                            Draw
+                            Give Card
                         </Button>
                     </div>
                 )}
