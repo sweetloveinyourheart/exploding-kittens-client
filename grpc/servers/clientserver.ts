@@ -26,6 +26,7 @@ import {
     SelectAffectedPlayerRequest,
     GiveCardRequest,
     StealCardRequest,
+    DrawCardsRequest,
 
 } from "@sweetloveinyourheart/exploding-kittens-client-core";
 import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
@@ -220,4 +221,14 @@ export class ClientServerGrpc {
             return ConnectError.from(error)
         }
     }
+
+    async DrawCards(request: GrpcRequest<DrawCardsRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.drawCards(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
+        }
+    }
+
 }

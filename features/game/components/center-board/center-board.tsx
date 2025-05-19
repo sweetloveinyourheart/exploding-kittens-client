@@ -1,9 +1,12 @@
 import DiscardPile from "@/components/discard-pile";
 import GameDesk from "@/components/game-desk";
 import { DeskState, GameState } from "@/types/game";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { CardEffect } from "@/constants/card-effects"
 import { useGameAction } from "../../hooks/game-action";
+import { DeskAction } from "@/types/desk";
+import { useGrpcClient } from "@/lib/hooks/grpc-client";
+import { toast } from "sonner";
 
 interface CenterBoardProps {
     deskState: DeskState
@@ -12,12 +15,47 @@ interface CenterBoardProps {
 }
 
 const CenterBoard: FunctionComponent<CenterBoardProps> = ({ gameState, deskState, userId }) => {
-    const actionTriggered = gameState.executingAction == CardEffect.PeekCards && gameState.playerTurn == userId
+    const [action, setAction] = useState<DeskAction | null>(null)
+    const [actionTriggered, setActionTriggered] = useState<boolean>(false)
+
+    const { client, isAuthenticated } = useGrpcClient()
+
+    useEffect(() => {
+        if (gameState.executingAction == CardEffect.PeekCards && gameState.playerTurn == userId) {
+            setActionTriggered(true)
+            setAction(DeskAction.SeeTheFuture)
+            return
+        }
+
+        if (!gameState.executingAction && gameState.playerTurn == userId) {
+            setActionTriggered(true)
+            setAction(DeskAction.Draw)
+            return
+        }
+
+        setActionTriggered(false)
+        setAction(null)
+    }, [gameState])
 
     const { openGameAction } = useGameAction()
     
-    const onSeeTheFuture = () => {
-        openGameAction(CardEffect.PeekCards)
+    const onExecuteAction = async () => {
+        if (action === DeskAction.SeeTheFuture) {
+            openGameAction(CardEffect.PeekCards)
+            return
+        }
+
+        if (action === DeskAction.Draw) {
+            const err = await client.DrawCards({ gameId: gameState.gameId })
+            if (err) {
+                toast("Failed to draw cards. Please try again.")
+            }
+            return
+        }
+    }
+
+    if (!isAuthenticated) {
+        return <>Loading ...</>
     }
 
     return (
@@ -25,12 +63,15 @@ const CenterBoard: FunctionComponent<CenterBoardProps> = ({ gameState, deskState
             {/* Deck */}
             <GameDesk 
                 desk={deskState} 
+                action={action}
                 actionTriggered={actionTriggered}
-                onExecuteAction={onSeeTheFuture}
+                onExecuteAction={onExecuteAction}
             />
 
             {/* Discard Pile */}
-            <DiscardPile discardPile={deskState.discardPile} />
+            <DiscardPile 
+                discardPile={deskState.discardPile} 
+            />
         </div>
     );
 }

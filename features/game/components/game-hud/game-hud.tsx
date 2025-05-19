@@ -7,7 +7,7 @@ import { CardEffect } from "@/constants/card-effects";
 import { useGrpcClient } from "@/lib/hooks/grpc-client";
 import { toast } from "sonner";
 import { NIL_USER_ID } from "@/constants/auth";
-import { useGameAction } from "../../hooks/game-action";
+import { useGameAction } from "@/features/game/hooks/game-action";
 
 interface GameHUDProps {
     userId: string
