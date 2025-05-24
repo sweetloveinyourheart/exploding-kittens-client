@@ -1,30 +1,32 @@
 "use server"
 
-import { GUEST_REGISTER_ROUTER } from "@/constants/routers"
-import Link from "next/link"
 import { auth } from "@/auth"
-import { Button } from "@/components/ui/button"
 import Welcome from "@/features/welcome/welcome"
+import Image from "next/image"
+import Background from "@/assets/images/background.jpg"
+import HomePageWelcome from "@/features/welcome/components/home-page"
 
 export default async function Home() {
   const session = await auth()
 
   if (session?.user) {
-    return (
-      <Welcome user={session.user}/>
-    )
+    return <Welcome user={session.user} />
   }
 
   return (
-    <main>
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-4xl font-bold mb-6">Welcome to Exploding Kittens</h1>
-        <Button type="button">
-          <Link href={GUEST_REGISTER_ROUTER}>
-            Guest Register
-          </Link>
-        </Button>
+    <main className="relative flex items-center justify-center min-h-screen px-4 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src={Background}
+          alt="Exploding Kittens Background"
+          fill
+          priority
+          className="object-cover object-center"
+        />
       </div>
+
+      <HomePageWelcome />
     </main>
   )
 }
