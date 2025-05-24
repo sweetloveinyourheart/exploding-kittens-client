@@ -21,7 +21,7 @@ export const cardEffectMap: Record<string, string> = {
     [CardEffect.PeekCards]: "peek_cards",
     [CardEffect.StealRandomCard]: "steal_random_card",
     [CardEffect.StealNamedCard]: "steal_named_card",
-};
+}
 
 export const cardEffectLabelMap: Record<string, string> = {
     [CardEffect.Explore]: "Explode",
@@ -34,4 +34,4 @@ export const cardEffectLabelMap: Record<string, string> = {
     [CardEffect.PeekCards]: "Peek at Top Cards",
     [CardEffect.StealRandomCard]: "Steal Random Card (Combo)",
     [CardEffect.StealNamedCard]: "Steal Named Card (Combo)",
-};
+}

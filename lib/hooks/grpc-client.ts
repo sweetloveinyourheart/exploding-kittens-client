@@ -1,12 +1,12 @@
 "use client"
 
-import { GrpcContext } from "@/contexts/GrpcProvider";
-import { useContext } from "react";
+import { GrpcContext } from "@/contexts/GrpcProvider"
+import { useContext } from "react"
 
 export const useGrpcClient = () => {
-    const context = useContext(GrpcContext);
+    const context = useContext(GrpcContext)
     if (!context) {
-        throw new Error('useGrpcClient must be used within a GrpcProvider');
+        throw new Error('useGrpcClient must be used within a GrpcProvider')
     }
-    return context;
-};
+    return context
+}

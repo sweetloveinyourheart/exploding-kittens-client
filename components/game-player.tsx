@@ -1,8 +1,8 @@
-import { FunctionComponent } from "react";
-import { Card } from "./ui/card";
-import { PlayerState } from "@/types/game";
+import { FunctionComponent } from "react"
+import { Card } from "./ui/card"
+import { PlayerState } from "@/types/game"
 import { SunIcon } from "@radix-ui/react-icons"
-import { Button } from "./ui/button";
+import { Button } from "./ui/button"
 
 interface GamePlayerProps {
     player: PlayerState
@@ -24,7 +24,7 @@ const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, actionTriggere
                 )}
             </Card>
         </div >
-    );
+    )
 }
 
-export default GamePlayer;
+export default GamePlayer

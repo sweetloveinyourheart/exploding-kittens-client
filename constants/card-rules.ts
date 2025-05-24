@@ -1,4 +1,4 @@
-import { Card } from '../constants/cards';
+import { Card } from '../constants/cards'
 
 // Cards that must be played alone
 export const MustPlayAlone: Record<string, boolean> = {
@@ -8,7 +8,7 @@ export const MustPlayAlone: Record<string, boolean> = {
     [Card.Shuffle]: true,
     [Card.SeeTheFuture]: true,
     [Card.Nope]: true, // special case: reaction, not turn-based play
-};
+}
 
 // Combo cards
 export const ComboCards: Record<string, boolean> = {
@@ -17,4 +17,4 @@ export const ComboCards: Record<string, boolean> = {
     [Card.HairyPotatoCat]: true,
     [Card.RainbowRalphingCat]: true,
     [Card.BeardCat]: true,
-};
+}

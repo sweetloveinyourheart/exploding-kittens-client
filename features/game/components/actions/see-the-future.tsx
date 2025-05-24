@@ -1,10 +1,10 @@
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { FunctionComponent, useEffect, useState } from "react";
-import { useGameAction } from "../../hooks/game-action";
-import { Card } from "@sweetloveinyourheart/exploding-kittens-client-core";
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { FunctionComponent, useEffect, useState } from "react"
+import { useGameAction } from "../../hooks/game-action"
+import { Card } from "@sweetloveinyourheart/exploding-kittens-client-core"
 import { Card as CardComponent, CardContent } from "@/components/ui/card"
-import { useGameDataProvider } from "@/lib/hooks/game-data-provider";
-import { toast } from "sonner";
+import { useGameDataProvider } from "@/lib/hooks/game-data-provider"
+import { toast } from "sonner"
 
 interface SeeTheFutureProps {
     gameId: string
@@ -55,7 +55,7 @@ const SeeTheFuture: FunctionComponent<SeeTheFutureProps> = ({ gameId, deskId }) 
                 </CardComponent>
             ))}
         </div>
-    );
+    )
 }
 
-export default SeeTheFuture;
+export default SeeTheFuture

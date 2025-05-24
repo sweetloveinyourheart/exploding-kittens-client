@@ -1,12 +1,13 @@
-import PlayerHand, { getCardIdFromVisualizeCard, visualizeCardId } from "@/components/player-hand";
-import { Button } from "@/components/ui/button";
-import { GameState, UserState } from "@/types/game";
-import { FunctionComponent, useState } from "react";
-import { ValidateCardPlay } from "../../validations/play-card";
-import { toast } from "sonner";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { CardEffect } from "@/constants/card-effects";
-import { useGameDataProvider } from "@/lib/hooks/game-data-provider";
+import PlayerHand, { getCardIdFromVisualizeCard, visualizeCardId } from "@/components/player-hand"
+import { Button } from "@/components/ui/button"
+import { GameState, UserState } from "@/types/game"
+import { FunctionComponent, useState } from "react"
+import { ValidateCardPlay } from "../../validations/play-card"
+import { toast } from "sonner"
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { CardEffect } from "@/constants/card-effects"
+import { useGameDataProvider } from "@/lib/hooks/game-data-provider"
+import { Game_Phase } from "@sweetloveinyourheart/exploding-kittens-client-core"
 
 interface HandProps {
     gameState: GameState
@@ -23,13 +24,13 @@ const Hand: FunctionComponent<HandProps> = ({ userState, gameState }) => {
     const onSelectCard = (cardId: string, index: number) => {
         const isExists = selectedCards.includes(visualizeCardId(cardId, index))
         if (isExists) {
-            setSelectedCards(selectedCards.filter(id => id !== visualizeCardId(cardId, index)));
+            setSelectedCards(selectedCards.filter(id => id !== visualizeCardId(cardId, index)))
         } else {
-            setSelectedCards([...selectedCards, visualizeCardId(cardId, index)]);
+            setSelectedCards([...selectedCards, visualizeCardId(cardId, index)])
         }
     }
 
-    const canPlayCard = gameState.playerTurn === userState.userId
+    const canPlayCard = gameState.playerTurn === userState.userId && gameState.gamePhase === Game_Phase.TURN_START
     const onPlayCard = async () => {
         if (!isAuthenticated) {
             return
@@ -121,7 +122,7 @@ const Hand: FunctionComponent<HandProps> = ({ userState, gameState }) => {
                 )}
             </div>
         </div>
-    );
+    )
 }
 
-export default Hand;
+export default Hand

@@ -1,7 +1,7 @@
-import { DEFAULT_TRANSPORT_BASE_URL } from "@/constants/transport";
-import { createConnectTransport } from "@connectrpc/connect-web";
-import { createAuthInterceptor } from "./interceptors/auth";
-import { createLoggerInterceptor } from "./interceptors/logger";
+import { DEFAULT_TRANSPORT_BASE_URL } from "@/constants/transport"
+import { createConnectTransport } from "@connectrpc/connect-web"
+import { createAuthInterceptor } from "./interceptors/auth"
+import { createLoggerInterceptor } from "./interceptors/logger"
 
 type GrpcConnectTransportOpts = {
   accessToken?: string
@@ -13,4 +13,4 @@ export const createGrpcConnectTransport = (opts: GrpcConnectTransportOpts) => cr
     createLoggerInterceptor(),
     createAuthInterceptor(opts.accessToken),
   ],
-});
+})

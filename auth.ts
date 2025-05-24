@@ -3,9 +3,9 @@
 import NextAuth from "next-auth"
 import "next-auth/jwt"
 
-import CredentialsProvider from "next-auth/providers/credentials";
-import { AUTH_GUEST_CREDENTIAL_PROVIDER } from "./constants/auth";
-import { grpcServer } from "./lib/grpc/grpc-server";
+import CredentialsProvider from "next-auth/providers/credentials"
+import { AUTH_GUEST_CREDENTIAL_PROVIDER } from "./constants/auth"
+import { grpcServer } from "./lib/grpc/grpc-server"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
     debug: !!process.env.AUTH_DEBUG,
@@ -33,10 +33,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                         userId: data.user.userId!,
                         username: data.user.username!,
                         accessToken: data.token,
-                    };
+                    }
                 }
 
-                return null;
+                return null
             },
         })
     ],

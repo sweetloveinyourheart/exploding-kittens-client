@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
-import { useGameDataProvider } from "@/lib/hooks/game-data-provider";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { DeskState, GameState, PlayerState, UserState } from "@/types/game";
-import { Card, Game, Game_Desk, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core";
-import { FunctionComponent, useEffect, useState } from "react";
-import { toast } from "sonner";
-import Hand from "./components/hand/hand";
-import CenterBoard from "./components/center-board/center-board";
-import GameHUD from "./components/game-hud/game-hud";
-import { useGameAction } from "./hooks/game-action";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { CardEffect } from "@/constants/card-effects";
-import SeeTheFuture from "./components/actions/see-the-future";
-import StealNamedCard from "./components/actions/steal-named-card";
-import { getLabelForEffect } from "./helpers/play";
-import StealRandomCard from "./components/actions/steal-random-card";
+import { useGameDataProvider } from "@/lib/hooks/game-data-provider"
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { DeskState, GameState, PlayerState, UserState } from "@/types/game"
+import { Card, Game, Game_Desk, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core"
+import { FunctionComponent, useEffect, useState } from "react"
+import { toast } from "sonner"
+import Hand from "./components/hand/hand"
+import CenterBoard from "./components/center-board/center-board"
+import GameHUD from "./components/game-hud/game-hud"
+import { useGameAction } from "./hooks/game-action"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { CardEffect } from "@/constants/card-effects"
+import SeeTheFuture from "./components/actions/see-the-future"
+import StealNamedCard from "./components/actions/steal-named-card"
+import { getLabelForEffect } from "./helpers/play"
+import StealRandomCard from "./components/actions/steal-random-card"
 
 interface GamePlayProps {
     gameId: string
@@ -77,7 +77,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
 
     const _buildDeskData = (gameDesk: Game_Desk | undefined) => {
         if (!gameDesk) {
-            return;
+            return
         }
 
         const { discardPile, ...desk } = gameDesk
@@ -104,6 +104,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
             playerTurn: game.playerTurn,
             executingAction: game.executingAction,
             affectedPlayer: game.affectedPlayer,
+            winnerId: game.winnerId,
         }))
 
         _buildPlayerData(game.players, game.playerHands)
@@ -172,6 +173,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
                 <CenterBoard
                     gameState={gameState}
                     deskState={deskState}
+                    userState={userState}
                     userId={userId}
                 />
             </div>
@@ -194,7 +196,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
                 </DialogContent>
             </Dialog>
         </div>
-    );
+    )
 }
 
 export default GamePlay

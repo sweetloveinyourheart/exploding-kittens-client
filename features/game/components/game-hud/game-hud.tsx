@@ -1,13 +1,13 @@
-import GamePlayer from "@/components/game-player";
-import { GameState, PlayerState } from "@/types/game";
-import { FunctionComponent } from "react";
-import { gamePhaseToText, getLabelForEffect, getPlayerTurnName } from "@/features/game/helpers/play";
-import { User } from "@sweetloveinyourheart/exploding-kittens-client-core";
-import { CardEffect } from "@/constants/card-effects";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { toast } from "sonner";
-import { NIL_USER_ID } from "@/constants/auth";
-import { useGameAction } from "../../hooks/game-action";
+import GamePlayer from "@/components/game-player"
+import { GameState, PlayerState } from "@/types/game"
+import { FunctionComponent } from "react"
+import { gamePhaseToText, getLabelForEffect, getPlayerTurnName } from "@/features/game/helpers/play"
+import { User } from "@sweetloveinyourheart/exploding-kittens-client-core"
+import { CardEffect } from "@/constants/card-effects"
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { toast } from "sonner"
+import { NIL_USER_ID } from "@/constants/auth"
+import { useGameAction } from "@/features/game/hooks/game-action"
 
 interface GameHUDProps {
     userId: string
@@ -66,7 +66,7 @@ const GameHUD: FunctionComponent<GameHUDProps> = ({ userId, playersData, gameSta
                 )}
             </div>
         </div>
-    );
+    )
 }
 
-export default GameHUD;
+export default GameHUD

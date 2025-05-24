@@ -1,11 +1,11 @@
 "use client"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { User } from "@sweetloveinyourheart/exploding-kittens-client-core";
-import { FunctionComponent, useEffect, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { User } from "@sweetloveinyourheart/exploding-kittens-client-core"
+import { FunctionComponent, useEffect, useState } from "react"
 
 interface LobbyPaticipantsProps {
   playerId: string
@@ -49,7 +49,7 @@ const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId }
           </div>
         </CardHeader>
       </Card>
-    );
+    )
   } else {
     return (
       <div className="flex flex-col space-y-3">
@@ -59,8 +59,8 @@ const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId }
           <Skeleton className="h-4 w-[200px]" />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default LobbyPaticipants;
+export default LobbyPaticipants

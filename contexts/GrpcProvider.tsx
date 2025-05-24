@@ -1,8 +1,8 @@
 "use client"
 
-import React, { createContext, useState, ReactNode, FC, useEffect } from 'react';
-import { ClientServerGrpc } from '@/grpc/servers/clientserver';
-import { useSession } from 'next-auth/react';
+import React, { createContext, useState, ReactNode, FC, useEffect } from 'react'
+import { ClientServerGrpc } from '@/grpc/servers/clientserver'
+import { useSession } from 'next-auth/react'
 
 interface GrpcContextType {
     client: ClientServerGrpc
@@ -10,10 +10,10 @@ interface GrpcContextType {
     setClient: (client: ClientServerGrpc) => void
 }
 
-export const GrpcContext = createContext<GrpcContextType | undefined>(undefined);
+export const GrpcContext = createContext<GrpcContextType | undefined>(undefined)
 
 interface GrpcProviderProps {
-    children: ReactNode;
+    children: ReactNode
 }
 
 const clientServer = new ClientServerGrpc()
@@ -40,5 +40,5 @@ export const GrpcProvider: FC<GrpcProviderProps> = ({ children }) => {
         <GrpcContext.Provider value={{ client, isAuthenticated, setClient }}>
             {children}
         </GrpcContext.Provider>
-    );
-};
+    )
+}
