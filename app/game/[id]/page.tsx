@@ -2,12 +2,12 @@
 
 import { auth } from "@/auth"
 import { HOME_ROUTER } from "@/constants/routers"
-import GamePlay from "@/features/game/game";
-import { grpcServer } from "@/lib/grpc/grpc-server";
+import GamePlay from "@/features/game/game"
+import { grpcServer } from "@/lib/grpc/grpc-server"
 import { redirect } from "next/navigation"
 
 interface GamePageProps {
-    params: Promise<{ [key: string]: string | string[] | undefined }>;
+    params: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function GamePage({ params }: GamePageProps) {

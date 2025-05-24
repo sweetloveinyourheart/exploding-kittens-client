@@ -7,7 +7,7 @@ import { redirect } from "next/navigation"
 import { grpcServer } from "@/lib/grpc/grpc-server"
 
 interface LobbyPageProps {
-    params: Promise<{ [key: string]: string | string[] | undefined }>;
+    params: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function LobbyPage({ params }: LobbyPageProps) {

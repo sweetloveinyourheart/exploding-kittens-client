@@ -26,12 +26,14 @@ import {
     SelectAffectedPlayerRequest,
     GiveCardRequest,
     StealCardRequest,
-    DrawCardsRequest,
+    DrawCardRequest,
+    DefuseExplodingKittenRequest,
+    PlantExplodingKittenRequest,
 
-} from "@sweetloveinyourheart/exploding-kittens-client-core";
-import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect";
-import { createGrpcConnectTransport } from "../transport";
-import { GrpcRequest, GrpcResponse } from "../interfaces/response";
+} from "@sweetloveinyourheart/exploding-kittens-client-core"
+import { CallOptions, Client, ConnectError, createClient } from "@connectrpc/connect"
+import { createGrpcConnectTransport } from "../transport"
+import { GrpcRequest, GrpcResponse } from "../interfaces/response"
 
 type ClientServerGrpcOpts = {
     accessToken?: string
@@ -222,13 +224,30 @@ export class ClientServerGrpc {
         }
     }
 
-    async DrawCards(request: GrpcRequest<DrawCardsRequest>, options?: CallOptions): Promise<ConnectError | null> {
+    async DrawCard(request: GrpcRequest<DrawCardRequest>, options?: CallOptions): Promise<ConnectError | null> {
         try {
-            await this.client.drawCards(request, options)
+            await this.client.drawCard(request, options)
             return null
         } catch (error) {
             return ConnectError.from(error)
         }
     }
 
+    async DefuseExplodingKitten(request: GrpcRequest<DefuseExplodingKittenRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.defuseExplodingKitten(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
+        }
+    }
+
+    async PlantExplodingKitten(request: GrpcRequest<PlantExplodingKittenRequest>, options?: CallOptions): Promise<ConnectError | null> {
+        try {
+            await this.client.plantExplodingKitten(request, options)
+            return null
+        } catch (error) {
+            return ConnectError.from(error)
+        }
+    }
 }

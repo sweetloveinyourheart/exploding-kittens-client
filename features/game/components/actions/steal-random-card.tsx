@@ -1,9 +1,9 @@
-import { Card as CardComponent } from "@/components/ui/card";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { PlayerState } from "@/types/game";
-import { FunctionComponent } from "react";
-import { toast } from "sonner";
-import { useGameAction } from "../../hooks/game-action";
+import { Card as CardComponent } from "@/components/ui/card"
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { PlayerState } from "@/types/game"
+import { FunctionComponent } from "react"
+import { toast } from "sonner"
+import { useGameAction } from "../../hooks/game-action"
 
 interface StealRandomCardProps {
     gameId: string
@@ -43,7 +43,7 @@ const StealRandomCard: FunctionComponent<StealRandomCardProps> = ({ gameId, affe
                 </CardComponent>
             ))}
         </div>
-    );
+    )
 }
 
-export default StealRandomCard;
+export default StealRandomCard

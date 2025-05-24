@@ -1,9 +1,9 @@
 "use client"
 
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { Card } from "@sweetloveinyourheart/exploding-kittens-client-core";
-import { createContext, FC, ReactNode, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { Card } from "@sweetloveinyourheart/exploding-kittens-client-core"
+import { createContext, FC, ReactNode, useEffect, useState } from "react"
+import { toast } from "sonner"
 
 interface GameDataContextType {
     cardList: Card[]
@@ -11,10 +11,10 @@ interface GameDataContextType {
     isLoading: boolean
 }
 
-export const GameDataContext = createContext<GameDataContextType | undefined>(undefined);
+export const GameDataContext = createContext<GameDataContextType | undefined>(undefined)
 
 interface GameDataProviderProps {
-    children: ReactNode;
+    children: ReactNode
 }
 
 export const GameDataProvider: FC<GameDataProviderProps> = ({ children }) => {

@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { CardEffect } from '@/constants/card-effects';
-import React, { createContext, useState, ReactNode } from 'react';
+import { CardEffect } from '@/constants/card-effects'
+import React, { createContext, useState, ReactNode } from 'react'
 
 type GameActionContextType = {
     isOpen: boolean
@@ -9,12 +9,12 @@ type GameActionContextType = {
     openGameAction: (action: CardEffect) => void
     closeGameAction: () => void
     onGameActionChange: (open: boolean) => void
-};
+}
 
-export const GameActionContext = createContext<GameActionContextType | undefined>(undefined);
+export const GameActionContext = createContext<GameActionContextType | undefined>(undefined)
 
 export const GameActionProvider = ({ children }: { children: ReactNode }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false)
     const [executingAction, setExecutingAction] = useState<CardEffect | null>(null)
 
     const openGameAction = (action: CardEffect) => {
@@ -28,9 +28,9 @@ export const GameActionProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const onGameActionChange = (open: boolean) => {
-        setIsOpen(open);
+        setIsOpen(open)
         if (!open) {
-            setExecutingAction(null);
+            setExecutingAction(null)
         }
     }
 
@@ -46,5 +46,5 @@ export const GameActionProvider = ({ children }: { children: ReactNode }) => {
         >
             {children}
         </GameActionContext.Provider>
-    );
-};
+    )
+}

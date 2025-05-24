@@ -1,17 +1,19 @@
-import { FunctionComponent } from "react";
-import { Card } from "./ui/card";
-import { DeskState } from "@/types/game";
-import { Button } from "./ui/button";
-import { DeskAction } from "@/types/desk";
+import { FunctionComponent } from "react"
+import { Card } from "./ui/card"
+import { DeskState } from "@/types/game"
+import { Button } from "./ui/button"
+import { DeskAction } from "@/types/desk"
+import { deskActionToText } from "@/features/game/helpers/play"
 
 interface GameDeskProps {
+    loading: boolean
     desk: DeskState | undefined
     action: DeskAction | null
     actionTriggered: boolean
     onExecuteAction: () => void
 }
 
-const GameDesk: FunctionComponent<GameDeskProps> = ({ desk, action, actionTriggered, onExecuteAction }) => {
+const GameDesk: FunctionComponent<GameDeskProps> = ({ loading, desk, action, actionTriggered, onExecuteAction }) => {
     if (!desk) {
         return null
     }
@@ -23,11 +25,11 @@ const GameDesk: FunctionComponent<GameDeskProps> = ({ desk, action, actionTrigge
                 <p className="text-sm">Remain cards ({desk.remainingCards})</p>
             </div>
             {actionTriggered && action
-                ? <Button onClick={() => onExecuteAction()}>{action}</Button>
+                ? <Button disabled={loading} onClick={() => onExecuteAction()}>{deskActionToText(action)}</Button>
                 : null
             }
         </Card>
-    );
+    )
 }
 
-export default GameDesk;
+export default GameDesk

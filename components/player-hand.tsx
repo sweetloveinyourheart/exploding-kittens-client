@@ -1,7 +1,7 @@
-import { FunctionComponent } from "react";
-import { Card, CardContent } from "./ui/card";
-import { cn, padTo2Digits } from "@/lib/utils";
-import { Card as CardData } from "@sweetloveinyourheart/exploding-kittens-client-core";
+import { FunctionComponent } from "react"
+import { Card, CardContent } from "./ui/card"
+import { cn, padTo2Digits } from "@/lib/utils"
+import { Card as CardData } from "@sweetloveinyourheart/exploding-kittens-client-core"
 
 interface PlayerHandProps {
     cards: CardData[]
@@ -21,9 +21,9 @@ const PlayerHand: FunctionComponent<PlayerHandProps> = ({ cards, selectedCards, 
     return (
         <>
             {cards.map((card, idx, arr) => {
-                const overlap = 60; // horizontal distance between cards
-                const centerIndex = Math.floor(arr.length / 2); // find the center index
-                const offsetX = (idx - centerIndex) * overlap; // calculate offset relative to the center
+                const overlap = 60 // horizontal distance between cards
+                const centerIndex = Math.floor(arr.length / 2) // find the center index
+                const offsetX = (idx - centerIndex) * overlap // calculate offset relative to the center
                 const isSelected = selectedCards.includes(visualizeCardId(card.cardId, idx))
 
                 return (
@@ -48,10 +48,10 @@ const PlayerHand: FunctionComponent<PlayerHandProps> = ({ cards, selectedCards, 
                             </div>
                         </CardContent>
                     </Card>
-                );
+                )
             })}
         </>
-    );
+    )
 }
 
-export default PlayerHand;
+export default PlayerHand

@@ -1,10 +1,10 @@
-import { Card as CardComponent } from "@/components/ui/card";
-import { Card } from "@/constants/cards";
-import { useGameDataProvider } from "@/lib/hooks/game-data-provider";
-import { useGrpcClient } from "@/lib/hooks/grpc-client";
-import { FunctionComponent } from "react";
-import { toast } from "sonner";
-import { useGameAction } from "../../hooks/game-action";
+import { Card as CardComponent } from "@/components/ui/card"
+import { Card } from "@/constants/cards"
+import { useGameDataProvider } from "@/lib/hooks/game-data-provider"
+import { useGrpcClient } from "@/lib/hooks/grpc-client"
+import { FunctionComponent } from "react"
+import { toast } from "sonner"
+import { useGameAction } from "../../hooks/game-action"
 
 interface StealNamedCardProps {
     gameId: string
@@ -47,7 +47,7 @@ const StealNamedCard: FunctionComponent<StealNamedCardProps> = ({ gameId }) => {
                 </CardComponent>
             ))}
         </div>
-    );
+    )
 }
 
-export default StealNamedCard;
+export default StealNamedCard
