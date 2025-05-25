@@ -1,17 +1,28 @@
 "use client"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { User } from "@sweetloveinyourheart/exploding-kittens-client-core"
 import { FunctionComponent, useEffect, useState } from "react"
 
+import Cat1 from "@/assets/images/cats/1.png"
+import Cat2 from "@/assets/images/cats/2.png"
+import Cat3 from "@/assets/images/cats/3.png"
+import Cat4 from "@/assets/images/cats/4.png"
+import Cat5 from "@/assets/images/cats/5.png"
+import Cat6 from "@/assets/images/cats/6.png"
+import Image from "next/image"
+import { Card } from "@/components/ui/card"
+
+const catImages = [Cat1, Cat2, Cat3, Cat4, Cat5, Cat6]
+
+
 interface LobbyPaticipantsProps {
   playerId: string
+  playerIndex: number
 }
 
-const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId }) => {
+const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId, playerIndex }) => {
   const [player, setPlayer] = useState<User | null>(null)
 
   const { client, isAuthenticated } = useGrpcClient()
@@ -33,22 +44,24 @@ const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId }
 
   if (player) {
     return (
-      <Card className="w-[280px] bg-muted/20 text-white shadow-xl rounded-2xl border border-muted">
-        <CardHeader className="flex items-center space-x-4 py-4 px-6">
-          <Avatar className="h-12 w-12">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback className="bg-primary text-white">
-              {player.fullName[0]}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <CardTitle className="text-lg font-medium leading-tight">
-              {player.fullName}
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">@{player.username}</p>
+      <>
+        <div className="h-[200px] flex flex-col items-center justify-end">
+          <Image
+            src={catImages[playerIndex]}
+            alt="Cat Avatar"
+            width={200}
+            height={200}
+            className="rounded-xl mb-3"
+          />
+        </div>
+        <Card className="text-center flex flex-col items-center p-2 bg-foreground/50 border border-foreground/10 rounded-lg text-background">
+          <div>
+            <h2 className="text-lg font-semibold">{player.fullName}</h2>
+            <p className="text-md text-muted-foreground">@{player.username}</p>
           </div>
-        </CardHeader>
-      </Card>
+        </Card>
+      </>
+
     )
   } else {
     return (

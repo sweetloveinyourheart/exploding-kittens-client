@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRouter } from "next/navigation"
 import { GAME_ROUTER, HOME_ROUTER } from "@/constants/routers"
+import LobbyHUDHeader from "./components/lobby-hud"
 
 interface GameLobbyProps {
     userId: string
@@ -85,47 +86,56 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => 
         userId === lobby?.hostUserId &&
         (lobby?.participants.length ?? 0) >= 2
 
+    if (!lobby) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-muted-foreground">Loading lobby...</p>
+            </div>
+        )
+    }
+
     return (
-        <div className="h-screen flex flex-col items-center justify-center p-6 space-y-8">
-            <div className="text-center space-y-2">
-                <h1 className="text-3xl font-semibold">
-                    Lobby Code: <span className="font-mono text-primary">{lobby?.lobbyCode}</span>
-                </h1>
-                <p className="text-gray-400">Waiting for players to join...</p>
+        <div className="flex flex-col h-screen">
+            {/* 1. Header Section */}
+            <LobbyHUDHeader
+                lobbyId={lobby.lobbyId}
+                lobbyName={lobby.lobbyName}
+                lobbyCode={lobby.lobbyCode}
+            />
+
+            {/* 2. Players Grid Section (flex-grow) */}
+            <div className="flex-1 flex items-center justify-center p-6">
+                <div className="flex justify-center items-center gap-6 flex-wrap">
+                    <AnimatePresence>
+                        {lobby?.participants.map((playerId, index) => (
+                            <motion.div
+                                key={playerId}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                            >
+                                <LobbyPaticipant playerId={playerId} playerIndex={index} />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </div>
             </div>
 
-            <div className="flex justify-center items-center gap-6">
-                <AnimatePresence>
-                    {lobby?.participants.map((playerId) => (
-                        <motion.div
-                            key={playerId}
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        >
-                            <LobbyPaticipant playerId={playerId} />
-                        </motion.div>
-                    ))}
-                </AnimatePresence>
-            </div>
-
-            <div className="flex gap-3 mt-6">
+            {/* 3. Action Buttons Section */}
+            <div className="flex justify-center h-[120px] gap-3">
                 <Button
-                    variant={"outline"}
-                    onClick={leaveLobby}
-                >
-                    Leave Lobby
-                </Button>
-                <Button
+                    className="w-[200px] h-[50px]"
                     disabled={!canStartNewMatch}
+                    variant={"wacky"}
                     onClick={startMatch}
                 >
                     Start Game
                 </Button>
             </div>
         </div>
-    )
+    );
+
 }
 
 export default GameLobby

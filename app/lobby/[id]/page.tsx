@@ -5,6 +5,8 @@ import GameLobby from "@/features/lobby/lobby"
 import { HOME_ROUTER } from "@/constants/routers"
 import { redirect } from "next/navigation"
 import { grpcServer } from "@/lib/grpc/grpc-server"
+import Image from "next/image"
+import Table from "@/assets/images/table.png"
 
 interface LobbyPageProps {
     params: Promise<{ [key: string]: string | string[] | undefined }>
@@ -25,9 +27,22 @@ export default async function LobbyPage({ params }: LobbyPageProps) {
     }
 
     return (
-        <GameLobby 
-            userId={session.user.userId}
-            lobbyData={JSON.stringify(res.data.lobby)} 
-        />
+        <div className="overflow-hidden">
+            {/* Background Image */}
+            <div className="absolute inset-0 -z-10">
+                <Image
+                    src={Table}
+                    alt="Exploding Kittens Background"
+                    fill
+                    priority
+                    className="object-cover object-center blur-xs"
+                />
+            </div>
+
+            <GameLobby
+                userId={session.user.userId}
+                lobbyData={JSON.stringify(res.data.lobby)}
+            />
+        </div>
     )
 }
