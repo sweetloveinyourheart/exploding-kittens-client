@@ -1,5 +1,4 @@
 import DiscardPile from "@/components/discard-pile"
-import GameDesk from "@/components/game-desk"
 import { DeskState, GameState, UserState } from "@/types/game"
 import { FunctionComponent, useEffect, useState } from "react"
 import { CardEffect } from "@/constants/card-effects"
@@ -11,7 +10,7 @@ import { Game_Phase } from "@sweetloveinyourheart/exploding-kittens-client-core"
 import { Card } from "@/constants/cards"
 import CardSlider from "@/components/card-slider"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { set } from "zod"
+import CardDeck from "@/components/card-desk"
 
 interface CenterBoardProps {
     deskState: DeskState
@@ -145,9 +144,9 @@ const CenterBoard: FunctionComponent<CenterBoardProps> = ({ gameState, deskState
     }
 
     return (
-        <div className="flex justify-center items-center gap-12">
+        <div className="h-full flex justify-center items-center gap-36">
             {/* Deck */}
-            <GameDesk
+            <CardDeck
                 loading={loading}
                 desk={deskState}
                 action={deskAction}

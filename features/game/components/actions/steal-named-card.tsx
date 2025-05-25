@@ -5,6 +5,7 @@ import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { FunctionComponent } from "react"
 import { toast } from "sonner"
 import { useGameAction } from "../../hooks/game-action"
+import Kittens from "@/components/kittens"
 
 interface StealNamedCardProps {
     gameId: string
@@ -37,14 +38,9 @@ const StealNamedCard: FunctionComponent<StealNamedCardProps> = ({ gameId }) => {
     return (
         <div className="grid grid-cols-4 gap-4">
             {cards.map((card, idx) => (
-                <CardComponent
-                    key={card.cardId || idx}
-                    className="border border-gray-300 p-4 rounded-lg"
-                    onClick={() => onSelectCard(card.cardId)}
-                >
-                    <div className="text-xs font-bold">{card.name}</div>
-                    <div className="text-xs">{card.description}</div>
-                </CardComponent>
+                <div className="w-40 h-60" key={`${card.cardId}_${idx}`} onClick={() => onSelectCard(card.cardId)}>
+                    <Kittens code={card.code} />
+                </div>
             ))}
         </div>
     )

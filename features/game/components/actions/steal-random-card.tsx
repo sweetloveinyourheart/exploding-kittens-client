@@ -4,6 +4,7 @@ import { PlayerState } from "@/types/game"
 import { FunctionComponent } from "react"
 import { toast } from "sonner"
 import { useGameAction } from "../../hooks/game-action"
+import HiddenKittens from "@/components/hidden-kittens"
 
 interface StealRandomCardProps {
     gameId: string
@@ -34,13 +35,9 @@ const StealRandomCard: FunctionComponent<StealRandomCardProps> = ({ gameId, affe
     return (
         <div className="grid grid-cols-4 gap-4">
             {cards.map((_, idx) => (
-                <CardComponent
-                    key={idx}
-                    className="border border-gray-300 p-4 rounded-lg"
-                    onClick={() => onSelectCard(idx)}
-                >
-                    <div className="text-xs">{"Random Card"}</div>
-                </CardComponent>
+                <div className="w-40 h-60" key={idx}>
+                    <HiddenKittens />
+                </div>
             ))}
         </div>
     )

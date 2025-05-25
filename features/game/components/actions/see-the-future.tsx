@@ -2,9 +2,9 @@ import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { FunctionComponent, useEffect, useState } from "react"
 import { useGameAction } from "../../hooks/game-action"
 import { Card } from "@sweetloveinyourheart/exploding-kittens-client-core"
-import { Card as CardComponent, CardContent } from "@/components/ui/card"
 import { useGameDataProvider } from "@/lib/hooks/game-data-provider"
 import { toast } from "sonner"
+import Kittens from "@/components/kittens"
 
 interface SeeTheFutureProps {
     gameId: string
@@ -41,18 +41,14 @@ const SeeTheFuture: FunctionComponent<SeeTheFutureProps> = ({ gameId, deskId }) 
     }, [isAuthenticated, isLoading])
 
     return (
-        <div className="flex">
+        <div className="flex justify-center items-center gap-4 p-4">
             {topCards.map((card, idx) => (
-                <CardComponent className="w-40 h-60 " key={`${card.cardId}_${idx}`}>
-                    <CardContent>
-                        <div className="text-xs font-bold">
-                            {card.name}
-                        </div>
-                        <div className="text-xs">
-                            {card.description}
-                        </div>
-                    </CardContent>
-                </CardComponent>
+                <div className="w-48 h-64" key={`${card.cardId}_${idx}`}>
+                    <h2 className="text-background text-center font-bold text-xl mb-4 border-b p-2">
+                        {(topCards.length - idx).toString().padStart(2, '0')}
+                    </h2>
+                    <Kittens code={card.code} />
+                </div>
             ))}
         </div>
     )

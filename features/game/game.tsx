@@ -146,10 +146,10 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
 
             case CardEffect.StealRandomCard:
                 const affectedPlayer = playerStates.find(playerState => playerState.playerId === gameState.affectedPlayer)
-                return <StealRandomCard gameId={gameState.gameId} affectedPlayer={affectedPlayer!}/>
-        
+                return <StealRandomCard gameId={gameState.gameId} affectedPlayer={affectedPlayer!} />
+
             case CardEffect.StealNamedCard:
-                return <StealNamedCard gameId={gameState.gameId}/>
+                return <StealNamedCard gameId={gameState.gameId} />
 
             default:
                 return null
@@ -169,7 +169,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
             </div>
 
             {/* Center Board */}
-            <div className="flex-1">
+            <div className=" h-full">
                 <CenterBoard
                     gameState={gameState}
                     deskState={deskState}
@@ -188,10 +188,8 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
 
             {/* Game Action Dialog */}
             <Dialog open={isOpen} onOpenChange={onGameActionChange}>
-                <DialogContent className="sm:max-w-[425px] md:max-w-[625px] lg:max-w-[825px]">
-                    <DialogHeader>
-                        <DialogTitle>{getLabelForEffect(gameState.executingAction as CardEffect)}</DialogTitle>
-                    </DialogHeader>
+                <DialogContent className="sm:max-w-[425px] md:max-w-[625px] lg:max-w-[825px] bg-transparent border-none shadow-none">
+                    <DialogHeader className="hidden"><DialogTitle>Dummy</DialogTitle></DialogHeader>
                     {renderGameAction()}
                 </DialogContent>
             </Dialog>
