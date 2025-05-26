@@ -4,8 +4,13 @@ import CardDeck from "@/components/card-desk"
 import DeckInsertSelector from "@/components/card-slider"
 import Image from "next/image"
 import Table from "@/assets/images/table.png"
+import { Button } from "@/components/ui/button"
+import { FullscreenNotification } from "@/components/full-screen-noti"
+import { useState } from "react"
 
 export default function Test() {
+    const [showNotif, setShowNotif] = useState(false)
+
     return (
         <main className="p-4">
             <div className="mb-4">
@@ -32,9 +37,21 @@ export default function Test() {
                         />
                     </div>
                     <div className="flex justify-center items-center h-full">
-                        <CardDeck actionTriggered onExecuteAction={() => console.log("Action executed")} loading={false} desk={undefined} action={null}/>
+                        <CardDeck actionTriggered onExecuteAction={() => console.log("Action executed")} loading={false} desk={{ remainingCards: 6 } as any} action={null} />
                     </div>
                 </div>
+            </div>
+            <div className="mb-4">
+                <h1 className="text-4xl font-bold">Welcome to Exploding Kittens</h1>
+                <p className="text-lg">This is a UI test page.</p>
+                <Button onClick={() => setShowNotif(true)}>Trigger Notification</Button>
+
+                <FullscreenNotification
+                    message="Your Turn"
+                    show={showNotif}
+                    duration={1000}
+                    onClose={() => setShowNotif(false)}
+                />
             </div>
         </main>
     )

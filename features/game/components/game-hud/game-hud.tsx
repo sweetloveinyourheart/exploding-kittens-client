@@ -20,10 +20,12 @@ const GameHUD: FunctionComponent<GameHUDProps> = ({ userId, playersData, gameSta
     const { client, isAuthenticated } = useGrpcClient()
     const { openGameAction } = useGameAction()
 
-    const canStealCard = [CardEffect.StealCard, CardEffect.StealRandomCard, CardEffect.StealNamedCard]
-        .includes(gameState.executingAction as CardEffect)
-        && gameState.playerTurn === userId
-        && gameState.affectedPlayer === NIL_USER_ID
+    const canStealCard = (active: boolean) => {
+        return active && [CardEffect.StealCard, CardEffect.StealRandomCard, CardEffect.StealNamedCard]
+            .includes(gameState.executingAction as CardEffect)
+            && gameState.playerTurn === userId
+            && gameState.affectedPlayer === NIL_USER_ID
+    }
 
     const onSelectStealingTarget = async (playerId: string) => {
         const err = await client.SelectAffectedPlayer({ gameId: gameState.gameId, playerId })
@@ -50,7 +52,7 @@ const GameHUD: FunctionComponent<GameHUDProps> = ({ userId, playersData, gameSta
             <div className="flex gap-6 p-6">
                 {playerStates.map((player, index) => (
                     <GamePlayer
-                        actionTriggered={canStealCard}
+                        actionTriggered={canStealCard(player.active)}
                         onExecuteAction={() => onSelectStealingTarget(player.playerId)}
                         player={player}
                         key={`${player.name}_${index}`}

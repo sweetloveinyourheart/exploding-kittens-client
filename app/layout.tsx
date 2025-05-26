@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { Geist, Geist_Mono, Londrina_Shadow, Londrina_Solid } from "next/font/google"
 import { SessionProvider } from "next-auth/react"
 import { Toaster } from "@/components/ui/sonner"
 
@@ -17,6 +17,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
+const londrinaShadow = Londrina_Shadow({
+  weight: "400",
+  variable: "--font-londrina-shadow",
+  subsets: ["latin"],
+})
+
+const londrinaSolid = Londrina_Solid({
+  weight: "400",
+  variable: "--font-londrina-solid",
+  subsets: ["latin"],
+})
+
 export const metadata: Metadata = {
   title: "Exploding Kittens",
   description: "An online version of the Exploding Kittens card game",
@@ -29,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${londrinaShadow.variable} ${londrinaSolid.variable} font-geist-sans`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

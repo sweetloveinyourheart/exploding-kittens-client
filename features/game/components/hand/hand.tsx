@@ -57,8 +57,8 @@ const Hand: FunctionComponent<HandProps> = ({ userState, gameState }) => {
         setSelectedCards([])
     }
 
-    const canGiveCard = gameState.playerTurn !== userState.userId 
-        && gameState.affectedPlayer === userState.userId 
+    const canGiveCard = gameState.playerTurn !== userState.userId
+        && gameState.affectedPlayer === userState.userId
         && gameState.executingAction === CardEffect.StealCard
     const onGiveCard = async () => {
         if (!isAuthenticated) {
@@ -103,20 +103,22 @@ const Hand: FunctionComponent<HandProps> = ({ userState, gameState }) => {
                 {canPlayCard && (
                     <div className="flex flex-col gap-2 justify-center">
                         <Button
+                            variant={"gradientGlow"}
                             onClick={onPlayCard}
                             disabled={selectedCards.length === 0}
                         >
-                            Play Card
+                            Play
                         </Button>
                     </div>
                 )}
                 {canGiveCard && (
                     <div className="flex flex-col gap-2 justify-center">
                         <Button
+                            variant={"gradientGlow"}
                             onClick={onGiveCard}
                             disabled={selectedCards.length === 0}
                         >
-                            Give Card
+                            Give
                         </Button>
                     </div>
                 )}

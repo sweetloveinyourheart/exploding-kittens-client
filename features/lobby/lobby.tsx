@@ -60,18 +60,6 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => 
         }
     }, [lobby?.participants])
 
-    const leaveLobby = async () => {
-        const res = await client.leaveLobby({ lobbyId: lobby.lobbyId })
-        if (res.error != null) {
-            toast.error("Error leave lobby", {
-                description: res.error.message
-            })
-            return
-        }
-
-        router.push(HOME_ROUTER)
-    }
-
     const startMatch = async () => {
         const err = await client.startMatch({ lobbyId: lobby.lobbyId })
         if (err) {
@@ -105,7 +93,7 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => 
 
             {/* 2. Players Grid Section (flex-grow) */}
             <div className="flex-1 flex items-center justify-center p-6">
-                <div className="flex justify-center items-center gap-6 flex-wrap">
+                <div className="flex justify-center items-center gap-9 flex-wrap">
                     <AnimatePresence>
                         {lobby?.participants.map((playerId, index) => (
                             <motion.div
@@ -115,7 +103,12 @@ const GameLobby: FunctionComponent<GameLobbyProps> = ({ userId, lobbyData }) => 
                                 exit={{ opacity: 0, y: 10 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
-                                <LobbyPaticipant playerId={playerId} playerIndex={index} />
+                                <LobbyPaticipant 
+                                    playerId={playerId} 
+                                    userId={userId}
+                                    host={lobby.hostUserId === playerId}
+                                    playerIndex={index} 
+                                />
                             </motion.div>
                         ))}
                     </AnimatePresence>

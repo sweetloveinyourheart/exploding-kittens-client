@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import { grpcServer } from "@/lib/grpc/grpc-server"
 import Image from "next/image"
 import Table from "@/assets/images/table.png"
+import Bg from "@/assets/images/bg.png"
 
 interface LobbyPageProps {
     params: Promise<{ [key: string]: string | string[] | undefined }>
@@ -31,11 +32,11 @@ export default async function LobbyPage({ params }: LobbyPageProps) {
             {/* Background Image */}
             <div className="absolute inset-0 -z-10">
                 <Image
-                    src={Table}
+                    src={Bg}
                     alt="Exploding Kittens Background"
                     fill
                     priority
-                    className="object-cover object-center blur-xs"
+                    className="object-cover object-center"
                 />
             </div>
 

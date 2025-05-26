@@ -25,6 +25,15 @@ const buttonVariants = cva(
           relative before:content-[''] before:absolute before:border before:border-black
           before:bottom-1 before:left-1 before:w-[calc(100%-1px)] before:h-[calc(100%-1px)]
           hover:before:bottom-[2px] hover:before:left-[2px] transition-transform`,
+        gradientGlow:
+          `relative inline-flex items-center justify-center text-white font-extrabold text-base leading-6 
+          min-h-[64px] px-[26px] py-[19px] md:px-8 cursor-pointer z-0 before:content-[''] before:absolute 
+          before:inset-0 before:rounded-[80px] before:bg-[linear-gradient(92.83deg,#ff7426_0%,#f93a13_100%)] 
+          before:z-[-2] after:content-[''] after:absolute after:inset-[4px] after:rounded-[80px] 
+          after:bg-[linear-gradient(#541a0f_0%,#0c0d0d_100%)] after:transition-all after:duration-100 after:ease-out after:z-[-1] 
+          hover:after:inset-0 hover:after:opacity-0 active:text-gray-300 
+          active:before:bg-[linear-gradient(0deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2)),linear-gradient(92.83deg,#ff7426_0%,#f93a13_100%)] 
+          disabled:cursor-default disabled:opacity-25`,
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

@@ -7,7 +7,6 @@ import { toast } from 'sonner'
 import { HOME_ROUTER } from '@/constants/routers'
 import { ExitIcon } from '@radix-ui/react-icons'
 import { CatIcon, CheckIcon, CopyIcon } from 'lucide-react'
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useState } from 'react'
 
 interface LobbyHUDHeaderProps {
@@ -28,25 +27,18 @@ export function CopyableLobbyCode({ lobbyCode }: { lobbyCode: string }) {
     return (
         <div className="text-sm flex items-center gap-2">
             Code: <span className="font-mono font-bold">{lobbyCode}</span>
-            <Tooltip>
-                <TooltipTrigger asChild>
-                    <Button
-                        onClick={handleCopy}
-                        size="icon"
-                        variant="ghost"
-                        className="h-6 w-6"
-                    >
-                        {copied ? (
-                            <CheckIcon className="h-4 w-4 text-green-500" />
-                        ) : (
-                            <CopyIcon className="h-4 w-4" />
-                        )}
-                    </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                    {copied ? "Copied!" : "Copy lobby code"}
-                </TooltipContent>
-            </Tooltip>
+            <Button
+                onClick={handleCopy}
+                size="icon"
+                variant="ghost"
+                className="h-6 w-6"
+            >
+                {copied ? (
+                    <CheckIcon className="h-4 w-4" />
+                ) : (
+                    <CopyIcon className="h-4 w-4" />
+                )}
+            </Button>
         </div>
     );
 }
@@ -76,22 +68,24 @@ export default function LobbyHUDHeader({
     }
 
     return (
-        <div className="shadow-md backdrop-blur-lg text-background border-none">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 py-2 px-6">
-                <div>
-                    <div className="flex items-center gap-2 text-xl font-bold tracking-wide uppercase">
-                        <CatIcon /> 
-                        <span>{lobbyName}</span>
+        <div className="px-8 py-4">
+            <div className="shadow-md bg-primary backdrop-blur-sm text-background rounded-xl border border-foreground">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 py-2 px-6">
+                    <div>
+                        <div className="flex items-center gap-2 text-xl font-bold tracking-wide uppercase">
+                            <CatIcon />
+                            <span>{lobbyName}</span>
+                        </div>
+                        <CopyableLobbyCode lobbyCode={lobbyCode} />
                     </div>
-                    <CopyableLobbyCode lobbyCode={lobbyCode} />
-                </div>
 
-                <Button
-                    variant={"ghost"}
-                    onClick={leaveLobby}
-                >
-                    <ExitIcon /> Leave Lobby
-                </Button>
+                    <Button
+                        variant={"ghost"}
+                        onClick={leaveLobby}
+                    >
+                        <ExitIcon /> Leave Lobby
+                    </Button>
+                </div>
             </div>
         </div>
     )

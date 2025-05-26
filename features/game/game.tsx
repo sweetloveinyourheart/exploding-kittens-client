@@ -3,7 +3,7 @@
 import { useGameDataProvider } from "@/lib/hooks/game-data-provider"
 import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { DeskState, GameState, PlayerState, UserState } from "@/types/game"
-import { Card, Game, Game_Desk, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core"
+import { Card, Game, Game_Desk, Game_Phase, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core"
 import { FunctionComponent, useEffect, useState } from "react"
 import { toast } from "sonner"
 import Hand from "./components/hand/hand"
@@ -16,6 +16,9 @@ import SeeTheFuture from "./components/actions/see-the-future"
 import StealNamedCard from "./components/actions/steal-named-card"
 import { getLabelForEffect } from "./helpers/play"
 import StealRandomCard from "./components/actions/steal-random-card"
+import { FullscreenNotification } from "@/components/full-screen-noti"
+import GameActions from "./components/actions"
+import Notifications from "./components/notifications/notifications"
 
 interface GamePlayProps {
     gameId: string
@@ -34,7 +37,6 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
 
     const { client, isAuthenticated } = useGrpcClient()
     const { cards, isLoading } = useGameDataProvider()
-    const { isOpen, executingAction, onGameActionChange } = useGameAction()
 
     const _buildPlayerData = (gamePlayers: Game_Player[], gamePlayerHands: Record<string, Game_PlayerHand>) => {
         const buildData = (playerHand: Game_PlayerHand): Card[] => {
@@ -139,23 +141,6 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
         return <>Loading ...</>
     }
 
-    const renderGameAction = () => {
-        switch (executingAction) {
-            case CardEffect.PeekCards:
-                return <SeeTheFuture gameId={gameState.gameId} deskId={deskState.deskId} />
-
-            case CardEffect.StealRandomCard:
-                const affectedPlayer = playerStates.find(playerState => playerState.playerId === gameState.affectedPlayer)
-                return <StealRandomCard gameId={gameState.gameId} affectedPlayer={affectedPlayer!} />
-
-            case CardEffect.StealNamedCard:
-                return <StealNamedCard gameId={gameState.gameId} />
-
-            default:
-                return null
-        }
-    }
-
     return (
         <div className="flex flex-col h-screen relative overflow-hidden">
             {/* HUD */}
@@ -187,12 +172,20 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
             </div>
 
             {/* Game Action Dialog */}
-            <Dialog open={isOpen} onOpenChange={onGameActionChange}>
-                <DialogContent className="sm:max-w-[425px] md:max-w-[625px] lg:max-w-[825px] bg-transparent border-none shadow-none">
-                    <DialogHeader className="hidden"><DialogTitle>Dummy</DialogTitle></DialogHeader>
-                    {renderGameAction()}
-                </DialogContent>
-            </Dialog>
+            <GameActions
+                gameState={gameState}
+                deskState={deskState}
+                playerStates={playerStates}
+            />
+
+            {/* Notification */}
+            <Notifications
+                userId={userId}
+                userState={userState}
+                gameState={gameState}
+                deskState={deskState}
+                playerStates={playerStates}
+            />
         </div>
     )
 }

@@ -1,4 +1,3 @@
-import { Card as CardComponent } from "@/components/ui/card"
 import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { PlayerState } from "@/types/game"
 import { FunctionComponent } from "react"
@@ -35,7 +34,7 @@ const StealRandomCard: FunctionComponent<StealRandomCardProps> = ({ gameId, affe
     return (
         <div className="grid grid-cols-4 gap-4">
             {cards.map((_, idx) => (
-                <div className="w-40 h-60" key={idx}>
+                <div className="w-20 h-30 cursor-pointer" key={idx} onClick={() => onSelectCard(idx)}>
                     <HiddenKittens />
                 </div>
             ))}

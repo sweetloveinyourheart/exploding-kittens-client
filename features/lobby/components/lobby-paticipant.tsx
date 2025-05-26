@@ -12,17 +12,18 @@ import Cat4 from "@/assets/images/cats/4.png"
 import Cat5 from "@/assets/images/cats/5.png"
 import Cat6 from "@/assets/images/cats/6.png"
 import Image from "next/image"
-import { Card } from "@/components/ui/card"
+import { ChevronLeft, ChevronRight, CircleArrowDownIcon, CrownIcon } from "lucide-react"
 
 const catImages = [Cat1, Cat2, Cat3, Cat4, Cat5, Cat6]
 
-
 interface LobbyPaticipantsProps {
+  host: boolean
+  userId: string
   playerId: string
   playerIndex: number
 }
 
-const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId, playerIndex }) => {
+const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ host, userId, playerId, playerIndex }) => {
   const [player, setPlayer] = useState<User | null>(null)
 
   const { client, isAuthenticated } = useGrpcClient()
@@ -45,28 +46,41 @@ const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ playerId, 
   if (player) {
     return (
       <>
-        <div className="h-[200px] flex flex-col items-center justify-end">
+        <div className="h-[80px] text-center flex flex-col items-center justify-end p-2 mb-2">
+          {host ? (<CrownIcon />) : null}
+          {userId === playerId ? (
+            <div className="font-londrina-shadow">
+              <h2 className="text-4xl font-semibold flex gap-2 justify-center items-center">
+                <ChevronRight /> You <ChevronLeft />
+              </h2>
+            </div>
+          ) : (
+            <div className="font-londrina-shadow">
+              <h2 className="text-4xl font-semibold">{player.fullName}</h2>
+            </div>
+          )}
+        </div>
+        <div className="h-[180px] flex flex-col items-center justify-end relative">
+          {/* Backdrop */}
+          {/* <div className="absolute w-[150px] h-[100px] bg-foreground/25 rounded-t-full z-0" /> */}
+
+          {/* Image */}
           <Image
             src={catImages[playerIndex]}
             alt="Cat Avatar"
-            width={200}
-            height={200}
-            className="rounded-xl mb-3"
+            width={150}
+            height={150}
+            className="rounded-xl relative z-10"
           />
+          {/* Horizontal line as a stand */}
+          <div className="w-[150px] h-[3px] bg-foreground rounded" />
         </div>
-        <Card className="text-center flex flex-col items-center p-2 bg-foreground/50 border border-foreground/10 rounded-lg text-background">
-          <div>
-            <h2 className="text-lg font-semibold">{player.fullName}</h2>
-            <p className="text-md text-muted-foreground">@{player.username}</p>
-          </div>
-        </Card>
       </>
-
     )
   } else {
     return (
       <div className="flex flex-col space-y-3">
-        <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+        <Skeleton className="h-[125px] w-[150px] rounded-xl" />
         <div className="space-y-2">
           <Skeleton className="h-4 w-[250px]" />
           <Skeleton className="h-4 w-[200px]" />
