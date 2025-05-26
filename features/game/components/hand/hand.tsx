@@ -88,9 +88,9 @@ const Hand: FunctionComponent<HandProps> = ({ userState, gameState }) => {
 
     return (
         <div className="flex justify-between">
-            <div className="flex flex-col justify-center">
-                <div>Player: {userState.name}</div>
-                <div>Cards: {userState.cards.length}</div>
+            <div className="w-[64px]">
+                {/* <div>Player: {userState.name}</div>
+                <div>Cards: {userState.cards.length}</div> */}
             </div>
             <div className="relative flex">
                 <PlayerHand
@@ -99,7 +99,7 @@ const Hand: FunctionComponent<HandProps> = ({ userState, gameState }) => {
                     onSelectCard={onSelectCard}
                 />
             </div>
-            <div>
+            <div className="w-[64px]">
                 {canPlayCard && (
                     <div className="flex flex-col gap-2 justify-center">
                         <Button

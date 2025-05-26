@@ -1,29 +1,69 @@
 import { FunctionComponent } from "react"
-import { Card } from "./ui/card"
 import { PlayerState } from "@/types/game"
-import { SunIcon } from "@radix-ui/react-icons"
+import { GamePlayerAction } from "@/types/player"
+
+import Cat1 from "@/assets/images/cats/1.png"
+import Cat2 from "@/assets/images/cats/2.png"
+import Cat3 from "@/assets/images/cats/3.png"
+import Cat4 from "@/assets/images/cats/4.png"
+import Cat5 from "@/assets/images/cats/5.png"
+import Cat6 from "@/assets/images/cats/6.png"
+import Target from "@/assets/images/target.png"
+import Image from "next/image"
 import { Button } from "./ui/button"
+
+const catImages = [Cat1, Cat2, Cat3, Cat4, Cat5, Cat6]
 
 interface GamePlayerProps {
     player: PlayerState
+    playerIndex: number
+    playerTurnId: string
+    action: GamePlayerAction | null
     actionTriggered: boolean
     onExecuteAction: () => void
 }
 
-const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, actionTriggered, onExecuteAction }) => {
+const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, playerIndex, playerTurnId, actionTriggered, onExecuteAction }) => {
     return (
         <div className="flex flex-col items-center">
-            <Card className="p-2 rounded-xl min-w-[150px]">
-                <div className="text-center">
-                    <div className="text-2xl"><SunIcon /></div>
-                    <div className="text-sm">{player.name}</div>
-                    <div className="text-xs">{player.count} cards</div>
-                </div>
-                {actionTriggered && (
-                    <Button onClick={onExecuteAction}>Steal</Button>
+            <div className="font-londrina-solid">
+                <h2 className="text-2xl font-bold text-foreground">{player.name}</h2>
+            </div>
+
+            <div className="h-[100px] flex flex-col items-center justify-end relative">
+                {/* Backdrop */}
+                {playerTurnId === player.playerId ? (
+                    <div className="absolute w-[100px] h-[75px] bg-destructive/50 border border-foreground rounded-t-full z-0" />
+                ) : (
+                    <div className="absolute w-[100px] h-[75px] bg-foreground/50 rounded-t-full z-0" />
                 )}
-            </Card>
-        </div >
+
+                {/* Image */}
+                <Image
+                    src={catImages[playerIndex]}
+                    alt="Cat Avatar"
+                    width={100}
+                    height={100}
+                    className="rounded-xl relative z-10"
+                />
+
+                {/* Horizontal line as a stand */}
+                <div className="w-[100px] h-[3px] bg-background rounded z-1" />
+            </div>
+
+            {/* Card Count */}
+            <div className="flex mb-2">
+                {Array.from({ length: player.count }).map((_, index) => (
+                    <div key={index} className="border w-[12px] h-[20px] bg-primary" />
+                ))}
+            </div>
+
+            {actionTriggered && (
+                <Button variant={"secondary"}>
+                    Steal Card
+                </Button>
+            )}
+        </div>
     )
 }
 

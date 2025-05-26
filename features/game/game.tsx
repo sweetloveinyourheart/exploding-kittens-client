@@ -3,22 +3,15 @@
 import { useGameDataProvider } from "@/lib/hooks/game-data-provider"
 import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { DeskState, GameState, PlayerState, UserState } from "@/types/game"
-import { Card, Game, Game_Desk, Game_Phase, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core"
+import { Card, Game, Game_Desk, Game_Player, Game_PlayerHand, User } from "@sweetloveinyourheart/exploding-kittens-client-core"
 import { FunctionComponent, useEffect, useState } from "react"
 import { toast } from "sonner"
 import Hand from "./components/hand/hand"
 import CenterBoard from "./components/center-board/center-board"
 import GameHUD from "./components/game-hud/game-hud"
-import { useGameAction } from "./hooks/game-action"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { CardEffect } from "@/constants/card-effects"
-import SeeTheFuture from "./components/actions/see-the-future"
-import StealNamedCard from "./components/actions/steal-named-card"
-import { getLabelForEffect } from "./helpers/play"
-import StealRandomCard from "./components/actions/steal-random-card"
-import { FullscreenNotification } from "@/components/full-screen-noti"
 import GameActions from "./components/actions"
 import Notifications from "./components/notifications/notifications"
+import GameActionBanner from "./components/banner/banner"
 
 interface GamePlayProps {
     gameId: string
@@ -163,6 +156,12 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
                 />
             </div>
 
+            {/* Game Action Banner */}
+            <GameActionBanner 
+                gameState={gameState} 
+                players={playersData}
+            />
+
             {/* Bottom Hand */}
             <div className="flex flex-col mt-8 h-1/6 p-6">
                 <Hand
@@ -181,10 +180,9 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
             {/* Notification */}
             <Notifications
                 userId={userId}
-                userState={userState}
                 gameState={gameState}
                 deskState={deskState}
-                playerStates={playerStates}
+                players={playersData}
             />
         </div>
     )

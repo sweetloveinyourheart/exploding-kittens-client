@@ -4,6 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { User } from "@sweetloveinyourheart/exploding-kittens-client-core"
 import { FunctionComponent, useEffect, useState } from "react"
+import { ChevronLeft, ChevronRight, CrownIcon } from "lucide-react"
 
 import Cat1 from "@/assets/images/cats/1.png"
 import Cat2 from "@/assets/images/cats/2.png"
@@ -12,7 +13,6 @@ import Cat4 from "@/assets/images/cats/4.png"
 import Cat5 from "@/assets/images/cats/5.png"
 import Cat6 from "@/assets/images/cats/6.png"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight, CircleArrowDownIcon, CrownIcon } from "lucide-react"
 
 const catImages = [Cat1, Cat2, Cat3, Cat4, Cat5, Cat6]
 
@@ -61,9 +61,6 @@ const LobbyPaticipants: FunctionComponent<LobbyPaticipantsProps> = ({ host, user
           )}
         </div>
         <div className="h-[180px] flex flex-col items-center justify-end relative">
-          {/* Backdrop */}
-          {/* <div className="absolute w-[150px] h-[100px] bg-foreground/25 rounded-t-full z-0" /> */}
-
           {/* Image */}
           <Image
             src={catImages[playerIndex]}

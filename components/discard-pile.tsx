@@ -13,23 +13,6 @@ interface DiscardPileProps {
 }
 
 const DiscardPile: FunctionComponent<DiscardPileProps> = ({ loading, discardPile, action, actionTriggered, onExecuteAction }) => {
-    // if (discardPile.length === 0) {
-    //     return null
-    // }
-
-    // return (
-    //     <Card className="w-40 h-60 flex items-center justify-center shadow-md rounded-2xl">
-    //         <div className="text-center">
-    //             <p className="text-sm">{discardPile[discardPile.length - 1]?.name}</p>
-    //             <p className="text-xs">{discardPile[discardPile.length - 1]?.description}</p>
-    //         </div>
-    //         {actionTriggered && action
-    //             ? <Button disabled={loading} onClick={() => onExecuteAction()}>{action}</Button>
-    //             : null
-    //         }
-    //     </Card>
-    // )
-
     const cardCount = 6;
 
     if (!discardPile || discardPile.length === 0) {
@@ -55,7 +38,6 @@ const DiscardPile: FunctionComponent<DiscardPileProps> = ({ loading, discardPile
                             <Button variant={"secondary"} disabled={loading} onClick={() => onExecuteAction()}>{action}</Button>
                         </div>
                     )
-
                 }
                 return (
                     <div

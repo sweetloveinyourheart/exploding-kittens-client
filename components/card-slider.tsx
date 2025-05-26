@@ -30,16 +30,16 @@ export default function CardSlider({ loading, cardNumber, onSelectIndex }: CardS
 
   return (
     <div>
-      <div className="flex justify-center items-center mb-4 font-semibold">
+      <div className="flex justify-center items-center mb-4 font-semibold text-background">
         {currentIndex.toString().padStart(2, '0')} / {cardNumber.toString().padStart(2, '0')}
       </div>
       <div className="flex flex-col items-center justify-center h-[300px] w-full relative">
         <div className="absolute top-[60px] bottom-[60px] left-1/2 transform -translate-x-1/2 flex flex-col justify-between z-0">
           {Array.from({ length: 15 }).map((_, idx) => (
-            <div key={idx} className="w-[2px] h-[8px] bg-foreground my-[2px]" />
+            <div key={idx} className="w-[2px] h-[8px] bg-background my-[2px]" />
           ))}
         </div>
-        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[20px] border-b-foreground z-10" />
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-b-[20px] border-b-background z-10" />
         <motion.div
           drag="y"
           dragConstraints={containerRef}
@@ -48,9 +48,9 @@ export default function CardSlider({ loading, cardNumber, onSelectIndex }: CardS
           onDrag={(event, info) => {
             setY(info.point.y - containerRef.current!.getBoundingClientRect().top)
           }}
-          className="bg-white border-2 border-foreground w-[40px] h-[40px] rounded-md flex items-center justify-center cursor-grab z-10"
+          className="bg-background border-2 border-foreground w-[40px] h-[40px] rounded-md flex items-center justify-center cursor-grab z-10"
         />
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[20px] border-t-foreground z-10" />
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[20px] border-t-background z-10" />
         <div
           ref={containerRef}
           className="absolute top-[60px] bottom-[60px] left-0 right-0 pointer-events-none z-0"

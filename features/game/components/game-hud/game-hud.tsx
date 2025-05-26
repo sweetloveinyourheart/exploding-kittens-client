@@ -8,6 +8,7 @@ import { useGrpcClient } from "@/lib/hooks/grpc-client"
 import { toast } from "sonner"
 import { NIL_USER_ID } from "@/constants/auth"
 import { useGameAction } from "@/features/game/hooks/game-action"
+import { GamePlayerAction } from "@/types/player"
 
 interface GameHUDProps {
     userId: string
@@ -44,28 +45,19 @@ const GameHUD: FunctionComponent<GameHUDProps> = ({ userId, playersData, gameSta
     }
 
     return (
-        <div className="flex justify-between">
-            <div className="w-60 p-6">
-                <div>Phase: {gamePhaseToText(gameState?.gamePhase)} </div>
-                <div>Turn: {getPlayerTurnName(userId, gameState?.playerTurn, playersData)}</div>
-            </div>
-            <div className="flex gap-6 p-6">
+        <div className="flex justify-center p-4">
+            <div className="flex gap-6">
                 {playerStates.map((player, index) => (
                     <GamePlayer
+                        player={player}
+                        playerIndex={index}
+                        playerTurnId={gameState.playerTurn}
+                        action={GamePlayerAction.StealCard}
                         actionTriggered={canStealCard(player.active)}
                         onExecuteAction={() => onSelectStealingTarget(player.playerId)}
-                        player={player}
                         key={`${player.name}_${index}`}
                     />
                 ))}
-            </div>
-            <div className="w-60 p-6">
-                {gameState.executingAction && (
-                    <div className="text-center">
-                        <div className="text-xl font-bold">Executing Action</div>
-                        <div className="text-md">{getLabelForEffect(gameState.executingAction as CardEffect)}</div>
-                    </div>
-                )}
             </div>
         </div>
     )

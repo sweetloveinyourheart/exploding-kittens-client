@@ -164,8 +164,8 @@ const CenterBoard: FunctionComponent<CenterBoardProps> = ({ gameState, deskState
             />
 
             <Dialog open={isCardSliderOpen} onOpenChange={open => setIsCardSliderOpen(open)}>
-                <DialogContent className="sm:max-w-[425px] md:max-w-[625px] lg:max-w-[825px]">
-                    <DialogHeader>
+                <DialogContent className="bg-transparent sm:max-w-[425px] md:max-w-[625px] lg:max-w-[825px]">
+                    <DialogHeader className="hidden">
                         <DialogTitle>Choose an index to place your card</DialogTitle>
                     </DialogHeader>
                     <CardSlider
