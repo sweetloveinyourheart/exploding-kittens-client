@@ -1,5 +1,4 @@
 import { FunctionComponent } from "react"
-import { Card, CardContent } from "./ui/card"
 import { cn, padTo2Digits } from "@/lib/utils"
 import { Card as CardData } from "@sweetloveinyourheart/exploding-kittens-client-core"
 import Kittens from "./kittens"

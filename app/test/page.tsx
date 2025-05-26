@@ -7,6 +7,7 @@ import Table from "@/assets/images/table.png"
 import { Button } from "@/components/ui/button"
 import { FullscreenNotification } from "@/components/full-screen-noti"
 import { useState } from "react"
+import { DeskState } from "@/types/game"
 
 export default function Test() {
     const [showNotif, setShowNotif] = useState(false)
@@ -37,7 +38,7 @@ export default function Test() {
                         />
                     </div>
                     <div className="flex justify-center items-center h-full">
-                        <CardDeck actionTriggered onExecuteAction={() => console.log("Action executed")} loading={false} desk={{ remainingCards: 6 } as any} action={null} />
+                        <CardDeck actionTriggered onExecuteAction={() => console.log("Action executed")} loading={false} desk={{ remainingCards: 6 } as DeskState} action={null} />
                     </div>
                 </div>
             </div>

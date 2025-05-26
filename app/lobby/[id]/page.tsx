@@ -6,7 +6,6 @@ import { HOME_ROUTER } from "@/constants/routers"
 import { redirect } from "next/navigation"
 import { grpcServer } from "@/lib/grpc/grpc-server"
 import Image from "next/image"
-import Table from "@/assets/images/table.png"
 import Bg from "@/assets/images/bg.png"
 
 interface LobbyPageProps {

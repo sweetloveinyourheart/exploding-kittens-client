@@ -3,11 +3,7 @@ import { FunctionComponent } from "react";
 import ExplodingKittensImage from "@/assets/images/exploding-kittens.png"
 import CatImage from "@/assets/images/cats/exp.png"
 
-interface HiddenKittensProps {
-
-}
-
-const HiddenKittens: FunctionComponent<HiddenKittensProps> = () => {
+const HiddenKittens: FunctionComponent = () => {
     return (
         <div
             className="flex flex-col justify-center items-center w-full h-full max-w-[192px] max-h-[256px] p-4 rounded-md shadow-xl custor-pointer"
