@@ -79,19 +79,22 @@ docker run -d -p 3000:3000 \
 ## Development
 
 ### Lint
-
+To run linting check
 ```sh
 pnpm lint
 ```
 
 ### Run Tests
-
+To run all tests with jest
 ```sh
 pnpm test
 ```
 
 ### Build
-
+To build standalone application
 ```sh
 pnpm build
 ```
+
+---
+Made with chaos and cuteness · © 2025 Exploding Kittens Online
