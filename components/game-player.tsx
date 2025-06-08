@@ -8,7 +8,6 @@ import Cat3 from "@/assets/images/cats/3.png"
 import Cat4 from "@/assets/images/cats/4.png"
 import Cat5 from "@/assets/images/cats/5.png"
 import Cat6 from "@/assets/images/cats/6.png"
-import Target from "@/assets/images/target.png"
 import Image from "next/image"
 import { Button } from "./ui/button"
 
@@ -20,10 +19,9 @@ interface GamePlayerProps {
     playerTurnId: string
     action: GamePlayerAction | null
     actionTriggered: boolean
-    onExecuteAction: () => void
 }
 
-const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, playerIndex, playerTurnId, actionTriggered, onExecuteAction }) => {
+const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, playerIndex, playerTurnId, actionTriggered }) => {
     return (
         <div className="flex flex-col items-center">
             <div className="font-londrina-solid">

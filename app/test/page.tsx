@@ -97,7 +97,6 @@ export default function Test() {
                             playerTurnId="2"
                             action={GamePlayerAction.StealCard}
                             actionTriggered={true}
-                            onExecuteAction={() => console.log("Action executed")}
                         />
                     </div>
                 </div>

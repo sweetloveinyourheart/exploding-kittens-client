@@ -54,7 +54,6 @@ const GameHUD: FunctionComponent<GameHUDProps> = ({ userId, playersData, gameSta
                         playerTurnId={gameState.playerTurn}
                         action={GamePlayerAction.StealCard}
                         actionTriggered={canStealCard(player.active)}
-                        onExecuteAction={() => onSelectStealingTarget(player.playerId)}
                         key={`${player.name}_${index}`}
                     />
                 ))}

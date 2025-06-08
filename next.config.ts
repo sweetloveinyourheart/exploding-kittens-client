@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     serverComponentsHmrCache: false, // defaults to true
   },
+  output: "standalone",
 };
 
 export default nextConfig;
