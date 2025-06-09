@@ -9,6 +9,7 @@ This section provides an overview of how the game is structured and how its core
 
 - [Recommended Tooling](#recommended-tooling)
 - [Running Locally](#running-locally)
+- [Development & Testing](#development)
 
 ---
 ## Recommended Tooling
@@ -71,10 +72,9 @@ Run this following command to start developing
 pnpm dev
 ```
 
----
-## Building Containers
+### Building Containers
 
-### Build it
+#### Build it
 
 ```bash
 docker build . \
@@ -82,7 +82,7 @@ docker build . \
 	-t kittens-client
 ```
 
-### Run it
+#### Run it
 
 ```bash
 docker run -d -p 3000:3000 \
