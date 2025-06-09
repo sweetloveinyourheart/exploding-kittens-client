@@ -2,33 +2,49 @@
 
 A modern web client for playing Exploding Kittens online with friends. Built with Next.js, React, and a beautiful, responsive UI.
 
-## Features
-
-- 🎮 Real-time multiplayer Exploding Kittens gameplay
-- 🧑‍🤝‍🧑 Guest login and lobby creation/joining
-- 💬 Animated banners and notifications for game actions
-- 🃏 Interactive card deck, discard pile, and player hand UI
-- 🌗 Light/dark theme support
-- 🛡️ Authentication with NextAuth.js
-- ⚡ Fast, type-safe gRPC communication with the backend
-- 🧪 Jest-based unit testing
-
-## Tech Stack
-
-- **Framework:** [Next.js](https://nextjs.org/) (App Router, React 19)
-- **Language:** TypeScript
-- **UI:** React, Radix UI, Tailwind CSS, Framer Motion
-- **State/Forms:** React Hook Form, Zod
-- **Authentication:** NextAuth.js
-- **gRPC/Web:** @connectrpc/connect, @connectrpc/connect-web
-- **3D/Graphics:** three.js, @react-three/fiber, @react-three/drei
-- **Utilities:** clsx, class-variance-authority, tailwind-merge, lucide-react, sonner
-- **Testing:** Jest, ts-jest, @types/jest
-- **Linting:** ESLint, eslint-config-next
-- **Package Manager:** pnpm
-
 ---
 ## Getting Started
+
+This section provides an overview of how the game is structured and how its core components interact. It’s a good place to begin if you're new to the project or planning to contribute.
+
+- [Recommended Tooling](#recommended-tooling)
+- [Running Locally](#running-locally)
+
+---
+## Recommended Tooling
+
+The recommended way to deal with tooling and versions is to use [asdf](https://asdf-vm.com/#/). This will allow you to install and manage multiple versions of the same tool on your machine. 
+Additionally, [direnv](https://direnv.net/) is also recommended to manage local environment variables using .env and .env.local files (See samples)
+
+### Installation
+First install `asdf` and `direnv`, then reload your profile for changes to take effect.
+Either restart your terminal application or run `source ~/.*rc`.
+
+* MacOS:
+```shell
+brew install asdf direnv
+source ~/.zshrc
+
+asdf plugin-add direnv
+asdf direnv setup --shell bash --version latest
+
+cut -d' ' -f1 .tool-versions|xargs -I{} asdf plugin add {}
+asdf install
+asdf direnv allow
+```
+
+* Linux:
+```shell
+asdf plugin-add direnv
+asdf direnv setup --shell bash --version latest
+
+cut -d' ' -f1 .tool-versions|xargs -i asdf plugin add  {}
+asdf install
+asdf direnv allow
+```
+
+---
+## Running locally
 
 ### Prerequisites
 
@@ -36,17 +52,19 @@ A modern web client for playing Exploding Kittens online with friends. Built wit
 - [pnpm](https://pnpm.io/) (v9+ recommended)
 
 ### Installation
-Set up your environment variables, and run the installation command:
+First copy `.env.sample` to `.env`, and fill in the appropriate / missing values.
+
+```
+cp .env.local.example .env.local
+```
+
+To install all packages and dependencies, run the installation command:
 
 ```sh
-export GIT_PAT="Personal_Access_Token_value"
 pnpm install 
 ```
 
----
-## Running locally
-
-### Local development
+### Running in dev mode
 Run this following command to start developing
 
 ```sh
@@ -54,14 +72,14 @@ pnpm dev
 ```
 
 ---
-## To test the docker image to deploy...
+## Building Containers
 
 ### Build it
 
 ```bash
 docker build . \
-	-t kittens-client \ 
-	--build-arg GIT_PAT=${GIT_PAT}
+	--build-arg GIT_PAT=${GIT_PAT} \
+	-t kittens-client
 ```
 
 ### Run it
@@ -97,4 +115,4 @@ pnpm build
 ```
 
 ---
-Made with chaos and cuteness · © 2025 Exploding Kittens Online
+<p align="center">Made with chaos and cuteness · © 2025 Exploding Kittens Online</p>
