@@ -137,7 +137,7 @@ const GamePlay: FunctionComponent<GamePlayProps> = ({ gameId, userId, players })
     return (
         <div className="flex flex-col h-screen relative overflow-hidden">
             {/* HUD */}
-            <div className="flex flex-col mb-6 h-1/6">
+            <div className="flex flex-col mb-6">
                 <GameHUD
                     gameState={gameState}
                     playerStates={playerStates}

@@ -19,9 +19,10 @@ interface GamePlayerProps {
     playerTurnId: string
     action: GamePlayerAction | null
     actionTriggered: boolean
+    onExecuteActions: () => void
 }
 
-const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, playerIndex, playerTurnId, actionTriggered }) => {
+const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, playerIndex, playerTurnId, actionTriggered, onExecuteActions }) => {
     return (
         <div className="flex flex-col items-center">
             <div className="font-londrina-solid">
@@ -57,7 +58,7 @@ const GamePlayer: FunctionComponent<GamePlayerProps> = ({ player, playerIndex, p
             </div>
 
             {actionTriggered && (
-                <Button variant={"secondary"}>
+                <Button variant={"secondary"} onClick={() => onExecuteActions()}>
                     Steal Card
                 </Button>
             )}
