@@ -3,12 +3,12 @@
 A modern web client for playing Exploding Kittens online with friends. Built with Next.js, React, and a beautiful, responsive UI.
 
 <p float="left">
-<img width="325" alt="Screenshot 2025-07-07 at 11 09 24" src="https://github.com/user-attachments/assets/fe0709d5-dfb7-4249-96cf-5e6b58f26ef3" />
-<img width="325" alt="Screenshot 2025-07-07 at 11 09 07" src="https://github.com/user-attachments/assets/8d5adfd8-286d-46f4-93e4-5c89307b97a2" />
-<img width="325" alt="Screenshot 2025-07-07 at 11 08 18" src="https://github.com/user-attachments/assets/83a51b3f-a7d5-462c-936e-c390a0c9f3b9" />
-<img width="325" alt="Screenshot 2025-07-07 at 11 08 26" src="https://github.com/user-attachments/assets/8edb01af-1048-4b73-bfe4-6ac605f280f6" />
-<img width="325" alt="Screenshot 2025-07-07 at 11 10 26" src="https://github.com/user-attachments/assets/24290860-13fd-4702-8a57-1bdb31cc1b96" />
-<img width="325" alt="Screenshot 2025-07-07 at 11 10 17" src="https://github.com/user-attachments/assets/1ef9f6d3-985b-44bd-a6df-5c40f00bdfa8" />
+<img width="200" alt="Screenshot 2025-07-07 at 11 09 24" src="https://github.com/user-attachments/assets/fe0709d5-dfb7-4249-96cf-5e6b58f26ef3" />
+<img width="200" alt="Screenshot 2025-07-07 at 11 09 07" src="https://github.com/user-attachments/assets/8d5adfd8-286d-46f4-93e4-5c89307b97a2" />
+<img width="200" alt="Screenshot 2025-07-07 at 11 08 18" src="https://github.com/user-attachments/assets/83a51b3f-a7d5-462c-936e-c390a0c9f3b9" />
+<img width="200" alt="Screenshot 2025-07-07 at 11 08 26" src="https://github.com/user-attachments/assets/8edb01af-1048-4b73-bfe4-6ac605f280f6" />
+<img width="200" alt="Screenshot 2025-07-07 at 11 10 26" src="https://github.com/user-attachments/assets/24290860-13fd-4702-8a57-1bdb31cc1b96" />
+<img width="200" alt="Screenshot 2025-07-07 at 11 10 17" src="https://github.com/user-attachments/assets/1ef9f6d3-985b-44bd-a6df-5c40f00bdfa8" />
 </p>
 
 ---
